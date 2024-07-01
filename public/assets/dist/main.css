@@ -1,5 +1,15 @@
 @import url(https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap);
 /* Slider */
+.addCourse .form-element.success {
+  width: 48%;
+}
+
+.addCourse form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 .editProfileForm input {
     padding: 15px 10px;
     margin-bottom: 16px;

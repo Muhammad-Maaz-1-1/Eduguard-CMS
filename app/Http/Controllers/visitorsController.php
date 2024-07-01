@@ -79,7 +79,7 @@ class visitorsController extends Controller
     }
     public function instructorProfile()
     {
-        $profile = profileModel::first();
+        $profile= profileModel::where('user_id',Auth::user()->id)->first();
 
         return view('visitors.instructor-profile',compact('profile'));
     }
@@ -112,44 +112,71 @@ class visitorsController extends Controller
     {
         $user = user::get();
         $profile = profileModel::where('user_id', Auth::user()->id)->first();
-        return view('visitors.editInstructorProfile', compact('user', 'profile'));
+        return view('visitors.editInstructorProfile', compact('user','profile'));
     }
     public function editInstructorProfileSubmit(Request $request)
     {
-        $profile = new profileModel;
-        $profile->user_id = $request->user_id;      
+        // Retrieve the profile model by user_id or create a new instance
+        $profile = ProfileModel::where('user_id', $request->user_id)->first();
+    
+        if (!$profile) {
+            // Create a new profile if none exists
+            $profile = new ProfileModel;
+            $profile->user_id = $request->user_id;
+        }
+    
+        // Handle common fields
         $profile->about = $request->about;
         $profile->skill = $request->skill;
         $profile->phone_number = $request->phone_number;
         $profile->nationality = $request->nationality;
-        
-        // Debug the input data
-        error_log('Education Title: ' . print_r($request->education_title, true));
-        error_log('Education Description: ' . print_r($request->education_description, true));
-        error_log('Education Date: ' . print_r($request->education_date, true));
-        
-        // Handle empty or null values
+    
+        // Handle empty or null values for education
         $education_titles = array_filter($request->education_title);
         $education_descriptions = array_filter($request->education_description);
         $education_dates = array_filter($request->education_date);
-        
-        // Concatenate properly
-        $profile->education_title = implode(',', $education_titles);
-        $profile->education_description = implode(',', $education_descriptions);
-        $profile->education_date = implode(',', $education_dates);
-        
+    
+        // Only update education fields if new values are provided
+        if (!empty($education_titles)) {
+            $profile->education_title = implode(',', $education_titles);
+        }
+        if (!empty($education_descriptions)) {
+            $profile->education_description = implode(',', $education_descriptions);
+        }
+        if (!empty($education_dates)) {
+            $profile->education_date = implode(',', $education_dates);
+        }
+    
+        // Handle empty or null values for experiences
+        $experience_titles = array_filter($request->experience_title);
+        $experience_descriptions = array_filter($request->experience_description);
+        $experience_dates = array_filter($request->experience_date);
+    
+        // Only update experience fields if new values are provided
+        if (!empty($experience_titles)) {
+            $profile->experience_title = implode(',', $experience_titles);
+        }
+        if (!empty($experience_descriptions)) {
+            $profile->experience_description = implode(',', $experience_descriptions);
+        }
+        if (!empty($experience_dates)) {
+            $profile->experience_date = implode(',', $experience_dates);
+        }
+    
         // Handle image upload
-        $image_path = '';
         if ($request->hasFile('image')) {
             $image_path = rand(0, 9999) . time() . '.' . $request->image->getClientOriginalName();
             $request->file('image')->move(public_path('uploads'), $image_path);
             $profile->image = $image_path;
         }
-        
+    
+        // Save the profile instance
         $profile->save();
-
-
+    
+        // Optionally, you can use dd($profile); here for debugging
+        return redirect()->back();
     }
+    
 
 
     public function editStudentsProfileSubmit(Request $request)
@@ -190,4 +217,11 @@ class visitorsController extends Controller
     {
         return view('visitors.watch');
     }
+    public function courseAdd()
+    {
+        return view('visitors.courseadd');
+    }
+
+
+    
 }

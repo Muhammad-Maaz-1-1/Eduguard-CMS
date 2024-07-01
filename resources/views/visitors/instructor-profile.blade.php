@@ -23,18 +23,23 @@
                  <div class="col-lg-4">
                      <div class="instructor-courses-instructor">
                          <div class="instructor-image mx-auto text-center">
-                             <img src="{{ asset('assets') }}/dist/images/hero/hero-img-02.png" alt="Instructor" />
+                            @if ($profile && !$profile->image==null)
+                                 <img src="{{ asset('assets'.'/'.$profile->image) }}" alt="Instructor" />
+                            @else
+                                <img src="{{ asset('assets') }}/src/images/teacher.png" alt="Instructor" />
+                            @endif
                          </div>
                          <div class="instructor-info text-center">
                              <h5 class="font-title--sm">{{ Auth()->user()->name }}</h5>
                              <p class="text-secondary mb-3">
-                                 @if ($profile && $profile->user_id === Auth::user()->id)
+                                 @if ($profile && $profile->user_id === Auth::user()->id && !$profile->skill == null)
                                      {{ $profile->skill }}
                                  @else
                                      <a href="{{ route('edit_instructor_profile') }}">
                                          Add your skill</a>
                                  @endif
-
+  <a class="d-block" href="{{ route('edit_instructor_profile') }}">
+                                         Edit Profile</a>
                              </p>
                              <ul class="list-inline social-links">
                                  <li class="list-inline-item">
@@ -186,15 +191,23 @@
                          </div>
                          <div class="instructor-qualification">
                              <h6>Education</h6>
-                             <div class="qualification-info">
-                                 <div class="qualification-info-title">
-                                     <h6>Bachelor Degree</h6>
-                                     <p>2008 - 2010</p>
-                                 </div>
-                                 <p>
-                                     Don Honorio Vectura Technological States University
-                                 </p>
-                             </div>
+                             @if ($profile)
+                                 
+                                @php
+            $education_titles = explode(',', $profile->education_title);
+            $education_descriptions = explode(',', $profile->education_description);
+            $education_dates = explode(',', $profile->education_date);
+        @endphp
+                            @foreach($education_titles as $index => $title)
+                <div class="qualification-info">
+                    <div class="qualification-info-title">
+                        <h6>{{ $title }}</h6>
+                        <p>{{ $education_dates[$index] ?? '' }}</p>
+                    </div>
+                    <p>{{ $education_descriptions[$index] ?? '' }}</p>
+                </div>
+            @endforeach
+                             @endif
 
                          </div>
                          <div class="instructor-qualification mb-0 pb-0 border-0">
@@ -215,7 +228,7 @@
                  </div>
                  <div class="col-lg-8 mt-4 mt-lg-0">
                      <div class="instructor-tabs">
-                         <ul class="nav nav-pills instructor-tabs-pills mb-3" id="pills-tab" role="tablist">
+                         <ul class="nav nav-pills instructor-tabs-pills mb-3 align-items-center flex-nowrap" id="pills-tab" role="tablist">
                              <li class="nav-item" role="presentation">
                                  <button class="nav-link active" id="pills-courses-tab" data-bs-toggle="pill"
                                      data-bs-target="#pills-courses" type="button" role="tab"
@@ -225,6 +238,9 @@
                                  <button class="nav-link me-0" id="pills-pills-review-tab" data-bs-toggle="pill"
                                      data-bs-target="#pills-pills-review" type="button" role="tab"
                                      aria-selected="false">Review</button>
+                             </li>
+                             <li class="nav-item" role="presentation" style="width: 80%;text-align: right;">
+                                 <a href="{{ route('course_add') }}" class="button button-lg button--primary p-3 ">ADD NEW COURSE </a>
                              </li>
                          </ul>
                          <div class="tab-content" id="pills-tabContent">
@@ -1119,6 +1135,7 @@
                              </div>
                          </div>
                      </div>
+                     <a href="{{ route('course_add') }}" class="btn">ADD NEW COURSE</a>
                  </div>
              </div>
          </div>

@@ -23,6 +23,7 @@ Route::get('/instructor/edit/profile',[visitorsController::class,'editInstructor
 Route::post('/instructor/edit/profile/submit',[visitorsController::class,'editInstructorProfileSubmit'])->name('edit_instructor_profile_submit');
 Route::post('/students/edit/profile/submit',[visitorsController::class,'editStudentsProfileSubmit'])->name('edit_profile_submit');
 Route::get('/watch',[visitorsController::class,'watch'])->name('watch');
+Route::get('/instructor/course/add',[visitorsController::class,'courseAdd'])->name('course_add');
 
 
 // admin panel
