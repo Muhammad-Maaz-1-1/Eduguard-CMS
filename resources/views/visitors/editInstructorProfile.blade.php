@@ -9,7 +9,7 @@
                     <div class="white-bg">
                         <div class="students-info-form editProfileForm">
                             <h6 class="font-title--card mb-4">Complete Your Profile</h6>
-                          
+
                             <input type="hidden" value="{{ Auth()->user()->id }}" name="user_id">
                             <div class="row g-3">
                                 <div class="col-lg-6">
@@ -52,11 +52,11 @@
                     <div class="white-bg">
                         <div class="change-image-wizard">
                             <div class="image mx-auto">
-                                @if ($profile->image === null)
-                                <img src="{{ asset('assets') }}/src/images/teacher.png" alt="User" />
-                                @else
+                                @if ($profile && $profile->image)
                                 <img src="{{ asset('uploads') }}/{{ $profile->image }}" alt="User" />
-                                @endif
+                            @else
+                                <img src="{{ asset('assets') }}/src/images/teacher.png" alt="User" />
+                            @endif
                             </div>
                             <div class="d-flex justify-content-center flex-column" style="position: relative;">
                                 <input name="image" class="imageFile" type="file">
@@ -132,7 +132,7 @@
                 <div class="d-flex justify-content-lg-center justify-content-center mt-2">
                     <button class="button button-lg button--primary" type="submit">Save Changes</button>
                 </div>
-               
+
         </form>
     </div>
 </section>
