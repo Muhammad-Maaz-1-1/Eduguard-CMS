@@ -52,132 +52,29 @@
                 <h2 class="font-title--md text-center mb-0">Browse Course with Top Categories</h2>
                 <div class="browse-categories__wrapper position-relative">
                     <div class="categories--box">
+                        @foreach ($categoryModel as $category )
+
                         <div class="browse-categories-item default-item-one">
                             <div class="browse-categories-item-icon">
                                 <div class="categories-one default-categories">
-                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M38.3334 31.6667C38.3334 32.5507 37.9822 33.3986 37.3571 34.0237C36.732 34.6488 35.8841 35 35.0001 35H5.00008C4.11603 35 3.26818 34.6488 2.64306 34.0237C2.01794 33.3986 1.66675 32.5507 1.66675 31.6667V13.3333C1.66675 12.4493 2.01794 11.6014 2.64306 10.9763C3.26818 10.3512 4.11603 10 5.00008 10H11.6667L15.0001 5H25.0001L28.3334 10H35.0001C35.8841 10 36.732 10.3512 37.3571 10.9763C37.9822 11.6014 38.3334 12.4493 38.3334 13.3333V31.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M19.9999 28.3333C23.6818 28.3333 26.6666 25.3486 26.6666 21.6667C26.6666 17.9848 23.6818 15 19.9999 15C16.318 15 13.3333 17.9848 13.3333 21.6667C13.3333 25.3486 16.318 28.3333 19.9999 28.3333Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
+                                    @if ($category->image)
+                                    @if (pathinfo($category->image, PATHINFO_EXTENSION) === 'svg')
+                                        {!! file_get_contents(public_path('uploads/' . $category->image)) !!}
+                                    @else
+                                        <img src="{{ asset('uploads/' . $category->image) }}"
+                                            alt="{{ $category->name }}">
+                                    @endif
+                                @endif
                                 </div>
                             </div>
                             <div class="browse-categories-item-text">
-                                <h6 class="font-title--card"><a href="#">Photography</a></h6>
+                                <h6 class="font-title--card"><a href="#">{{$category->name}}</a></h6>
                                 <p>587 Courses</p>
                             </div>
                         </div>
-                        <div class="browse-categories-item default-item-two">
-                            <div class="browse-categories-item-icon">
-                                <div class="categories-two default-categories">
-                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M33.3333 5H6.66659C4.82564 5 3.33325 6.49238 3.33325 8.33333V25C3.33325 26.8409 4.82564 28.3333 6.66659 28.3333H33.3333C35.1742 28.3333 36.6666 26.8409 36.6666 25V8.33333C36.6666 6.49238 35.1742 5 33.3333 5Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M13.3333 35H26.6666" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M20 28.3334V35" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        
-                                </div>
-                            </div>
-                            <div class="browse-categories-item-text">
-                                <h6 class="font-title--card"><a href="#">Development</a></h6>
-                                <p>17k Courses</p>
-                            </div>
-                        </div>
-                        <div class="browse-categories-item default-item-three">
-                            <div class="browse-categories-item-icon">
-                                <div class="categories-three default-categories">
-                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M20 31.6667L31.6667 20L36.6667 25L25 36.6667L20 31.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M29.9999 21.6667L27.4999 9.16671L3.33325 3.33337L9.16659 27.5L21.6666 30L29.9999 21.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M3.33325 3.33337L15.9766 15.9767" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M18.3333 21.6667C20.1743 21.6667 21.6667 20.1743 21.6667 18.3333C21.6667 16.4924 20.1743 15 18.3333 15C16.4924 15 15 16.4924 15 18.3333C15 20.1743 16.4924 21.6667 18.3333 21.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        
-                                </div>
-                            </div>
-                            <div class="browse-categories-item-text">
-                                <h6 class="font-title--card"><a href="#">Design</a></h6>
-                                <p>23k Courses</p>
-                            </div>
-                        </div>
-                        <div class="browse-categories-item default-item-four">
-                            <div class="browse-categories-item-icon">
-                                <div class="categories-four default-categories">
-                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5 30V20C5 16.0218 6.58035 12.2064 9.3934 9.3934C12.2064 6.58035 16.0218 5 20 5C23.9782 5 27.7936 6.58035 30.6066 9.3934C33.4196 12.2064 35 16.0218 35 20V30" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M35 31.6667C35 32.5508 34.6488 33.3986 34.0237 34.0237C33.3986 34.6489 32.5507 35 31.6667 35H30C29.1159 35 28.2681 34.6489 27.643 34.0237C27.0179 33.3986 26.6667 32.5508 26.6667 31.6667V26.6667C26.6667 25.7827 27.0179 24.9348 27.643 24.3097C28.2681 23.6846 29.1159 23.3334 30 23.3334H35V31.6667ZM5 31.6667C5 32.5508 5.35119 33.3986 5.97631 34.0237C6.60143 34.6489 7.44928 35 8.33333 35H10C10.8841 35 11.7319 34.6489 12.357 34.0237C12.9821 33.3986 13.3333 32.5508 13.3333 31.6667V26.6667C13.3333 25.7827 12.9821 24.9348 12.357 24.3097C11.7319 23.6846 10.8841 23.3334 10 23.3334H5V31.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        
-                                </div>
-                            </div>
-                            <div class="browse-categories-item-text">
-                                <h6 class="font-title--card"><a href="#">Music</a></h6>
-                                <p>297 Courses</p>
-                            </div>
-                        </div>
-                        <div class="browse-categories-item default-item-five">
-                            <div class="browse-categories-item-icon">
-                                <div class="categories-five default-categories">
-                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M35 26.6667V13.3334C34.9994 12.7488 34.8451 12.1747 34.5526 11.6686C34.26 11.1626 33.8396 10.7423 33.3333 10.45L21.6667 3.78337C21.1599 3.49081 20.5851 3.33679 20 3.33679C19.4149 3.33679 18.8401 3.49081 18.3333 3.78337L6.66667 10.45C6.16044 10.7423 5.73997 11.1626 5.44744 11.6686C5.1549 12.1747 5.0006 12.7488 5 13.3334V26.6667C5.0006 27.2513 5.1549 27.8254 5.44744 28.3314C5.73997 28.8375 6.16044 29.2578 6.66667 29.55L18.3333 36.2167C18.8401 36.5093 19.4149 36.6633 20 36.6633C20.5851 36.6633 21.1599 36.5093 21.6667 36.2167L33.3333 29.55C33.8396 29.2578 34.26 28.8375 34.5526 28.3314C34.8451 27.8254 34.9994 27.2513 35 26.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M5.44995 11.6L20 20.0166L34.5499 11.6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M20 36.8V20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        
-                                </div>
-                            </div>
-                            <div class="browse-categories-item-text">
-                                <h6 class="font-title--card"><a href="#">Marketing</a></h6>
-                                <p>2k Courses</p>
-                            </div>
-                        </div>
-                        <div class="browse-categories-item default-item-three">
-                            <div class="browse-categories-item-icon">
-                                <div class="categories-three default-categories">
-                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M20 31.6667L31.6667 20L36.6667 25L25 36.6667L20 31.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M29.9999 21.6667L27.4999 9.16671L3.33325 3.33337L9.16659 27.5L21.6666 30L29.9999 21.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M3.33325 3.33337L15.9766 15.9767" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M18.3333 21.6667C20.1743 21.6667 21.6667 20.1743 21.6667 18.3333C21.6667 16.4924 20.1743 15 18.3333 15C16.4924 15 15 16.4924 15 18.3333C15 20.1743 16.4924 21.6667 18.3333 21.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        
-                                </div>
-                            </div>
-                            <div class="browse-categories-item-text">
-                                <h6 class="font-title--card"><a href="#">Design</a></h6>
-                                <p>23k Courses</p>
-                            </div>
-                        </div>
-                        <div class="browse-categories-item default-item-four">
-                            <div class="browse-categories-item-icon">
-                                <div class="categories-four default-categories">
-                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5 30V20C5 16.0218 6.58035 12.2064 9.3934 9.3934C12.2064 6.58035 16.0218 5 20 5C23.9782 5 27.7936 6.58035 30.6066 9.3934C33.4196 12.2064 35 16.0218 35 20V30" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M35 31.6667C35 32.5508 34.6488 33.3986 34.0237 34.0237C33.3986 34.6489 32.5507 35 31.6667 35H30C29.1159 35 28.2681 34.6489 27.643 34.0237C27.0179 33.3986 26.6667 32.5508 26.6667 31.6667V26.6667C26.6667 25.7827 27.0179 24.9348 27.643 24.3097C28.2681 23.6846 29.1159 23.3334 30 23.3334H35V31.6667ZM5 31.6667C5 32.5508 5.35119 33.3986 5.97631 34.0237C6.60143 34.6489 7.44928 35 8.33333 35H10C10.8841 35 11.7319 34.6489 12.357 34.0237C12.9821 33.3986 13.3333 32.5508 13.3333 31.6667V26.6667C13.3333 25.7827 12.9821 24.9348 12.357 24.3097C11.7319 23.6846 10.8841 23.3334 10 23.3334H5V31.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        
-                                </div>
-                            </div>
-                            <div class="browse-categories-item-text">
-                                <h6 class="font-title--card"><a href="#">Music</a></h6>
-                                <p>297 Courses</p>
-                            </div>
-                        </div>
-                        <div class="browse-categories-item default-item-five">
-                            <div class="browse-categories-item-icon">
-                                <div class="categories-five default-categories">
-                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M35 26.6667V13.3334C34.9994 12.7488 34.8451 12.1747 34.5526 11.6686C34.26 11.1626 33.8396 10.7423 33.3333 10.45L21.6667 3.78337C21.1599 3.49081 20.5851 3.33679 20 3.33679C19.4149 3.33679 18.8401 3.49081 18.3333 3.78337L6.66667 10.45C6.16044 10.7423 5.73997 11.1626 5.44744 11.6686C5.1549 12.1747 5.0006 12.7488 5 13.3334V26.6667C5.0006 27.2513 5.1549 27.8254 5.44744 28.3314C5.73997 28.8375 6.16044 29.2578 6.66667 29.55L18.3333 36.2167C18.8401 36.5093 19.4149 36.6633 20 36.6633C20.5851 36.6633 21.1599 36.5093 21.6667 36.2167L33.3333 29.55C33.8396 29.2578 34.26 28.8375 34.5526 28.3314C34.8451 27.8254 34.9994 27.2513 35 26.6667Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M5.44995 11.6L20 20.0166L34.5499 11.6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M20 36.8V20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        
-                                </div>
-                            </div>
-                            <div class="browse-categories-item-text">
-                                <h6 class="font-title--card"><a href="#">Marketing</a></h6>
-                                <p>2k Courses</p>
-                            </div>
-                        </div>
+                        @endforeach
+
+
                     </div>
                 </div>
                 <div class="row">
@@ -1069,7 +966,7 @@
                                 <svg width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 2H10.4C11.8852 2 13.3096 2.5619 14.3598 3.5621C15.41 4.56229 16 5.91885 16 7.33333V26C16 24.9391 15.5575 23.9217 14.7699 23.1716C13.9822 22.4214 12.9139 22 11.8 22H2V2Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M30 2H21.6C20.1148 2 18.6904 2.5619 17.6402 3.5621C16.59 4.56229 16 5.91885 16 7.33333V26C16 24.9391 16.4425 23.9217 17.2302 23.1716C18.0178 22.4214 19.0861 22 20.2 22H30V2Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>  
+                                </svg>
                             </div>
                             <h5 class="font-title--xs">250k online course</h5>
                             <p>
@@ -1085,7 +982,7 @@
                                     <path d="M21.4575 17.1211C22.201 17.1717 22.939 17.2783 23.6675 17.4395C24.6775 17.6404 25.8938 18.0546 26.3257 18.9607C26.6018 19.5415 26.6018 20.218 26.3257 20.7989C25.8952 21.705 24.6775 22.1191 23.6675 22.3269" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5994 18.0913C15.6425 18.0913 19.9504 18.8553 19.9504 21.9071C19.9504 24.9604 15.6699 25.7503 10.5994 25.7503C5.55624 25.7503 1.24976 24.9877 1.24976 21.9345C1.24976 18.8813 5.52891 18.0913 10.5994 18.0913Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5993 13.7349C7.27274 13.7349 4.60767 11.0684 4.60767 7.74188C4.60767 4.41669 7.27274 1.75024 10.5993 1.75024C13.9259 1.75024 16.5923 4.41669 16.5923 7.74188C16.5923 11.0684 13.9259 13.7349 10.5993 13.7349Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg> 
+                                </svg>
                             </div>
                             <h5 class="font-title--xs">Expert Instructors</h5>
                             <p>

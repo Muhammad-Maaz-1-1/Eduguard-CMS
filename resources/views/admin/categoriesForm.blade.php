@@ -17,25 +17,29 @@
                         <h6 class="m-0 font-weight-bold text-primary text-uppercase">categories form</h6>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form method="POST" action="{{route('categories_form_submit')}}" enctype="multipart/form-data">
+                            @csrf
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Enter your name" required>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="image">Image</label>
-                                        <input type="file" class="form-control-file" id="image">
+                                        <input  type="file" class="form-control-file" name="image" accept=".png,.jpg,.jpeg,.svg" id="image" required>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="image">Description</label>
-                                        <input type="text" placeholder="Enter your Description" class="form-control" id="description">
+                                        <input type="text" name="description" placeholder="Enter your Description" class="form-control" id="description" required>
                                     </div>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
                         </form>

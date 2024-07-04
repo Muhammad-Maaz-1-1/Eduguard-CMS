@@ -24,6 +24,7 @@ Route::post('/instructor/edit/profile/submit',[visitorsController::class,'editIn
 Route::post('/students/edit/profile/submit',[visitorsController::class,'editStudentsProfileSubmit'])->name('edit_profile_submit');
 Route::get('/watch',[visitorsController::class,'watch'])->name('watch');
 Route::get('/instructor/course/add',[visitorsController::class,'courseAdd'])->name('course_add');
+Route::post('/instructor/course/submit',[visitorsController::class,'courseFormSubmit'])->name('course_form_submit');
 
 
 // admin panel
@@ -31,3 +32,4 @@ Route::get('/admin/login',[adminController::class,'adminLogin'])->name('admin_lo
 Route::get('/dashboard',[adminController::class,'index'])->name('index');
 Route::get('/dashboard/categories',[adminController::class,'adminCategories'])->name('admin_categories');
 Route::get('/dashboard/categories/form',[adminController::class,'adminCategoriesForm'])->name('categories_form');
+Route::post('/dashboard/categories/form/submit',[adminController::class,'adminCategoriesFormSubmit'])->name('categories_form_submit');

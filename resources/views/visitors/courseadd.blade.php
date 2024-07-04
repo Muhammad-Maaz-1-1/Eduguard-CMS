@@ -8,49 +8,55 @@
              <div class="col-lg-12 order-2 order-lg-0">
                  <div class="signup-area-textwrapper">
                  <h2 class="mb-4">ADD NEW COURSE</h2>
-                <form action="{{ route('register_submit') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('course_form_submit') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="form-element success">
         <div class="form-alert">
-            <label for="instructor_id">Instructor ID</label>
+            <label for="instructor_id">Title</label>
         </div>
         <div class="form-alert-input">
-            <input type="text" name="instructor_id" id="instructor_id" placeholder="Enter Instructor ID" required />
+            <input type="text" name="title" id="title" placeholder=" Title " required />
+            <input value="1" type="hidden" value="1" name="instructor_id" value="{{Auth::user()->id}}" id="instructor_id" placeholder="Enter Instructor ID" required />
         </div>
     </div>
 
     <div class="form-element success">
         <div class="form-alert">
-            <label for="featured_image">Featured Image</label>
+            <label for="image">Featured Image</label>
         </div>
         <div class="form-alert-input">
-            <input type="file" name="featured_image" id="featured_image" accept="image/*" required />
+            <input type="file" name="image" id="image" accept="image/*" required />
         </div>
     </div>
     <div class="form-element success">
         <div class="form-alert">
-            <label for="featured_video">Featured video</label>
+            <label for="video">Featured video</label>
         </div>
         <div class="form-alert-input">
-            <input type="file" name="featured_video" id="featured_video" accept="video" required />
+            <input type="file" name="video" id="video" accept="video" required />
         </div>
     </div>
 
-    <div class="form-element success ">
+    <div class="form-element success">
         <div class="form-alert">
-            <label for="title">Title</label>
+            <label for="total_lesson">Category</label>
         </div>
         <div class="form-alert-input">
-            <input type="text" name="title" id="title" placeholder="Course Title" required />
+            <select name="category" id="category" class="mb-2 bg-transparent">
+                <option value="select category">select category</option>
+                @foreach ( $categoryModel as $category )
+                <option value="{{$category->name}}">{{$category->name}} </option>
+                @endforeach
+            </select>
+            <input type="text" name="inputCategory" id="inputCategory" placeholder="Add New Category"  />
         </div>
     </div>
-
     <div class="form-element success">
         <div class="form-alert">
             <label for="total_lesson">Total Lessons</label>
         </div>
         <div class="form-alert-input">
-            <input type="number" name="total_lesson" id="total_lesson" placeholder="Number of Lessons" required />
+            <input type="number" value="1" name="total_lesson" id="total_lesson" placeholder="Number of Lessons" required />
         </div>
     </div>
 
@@ -59,7 +65,7 @@
             <label for="total_hours">Total Hours</label>
         </div>
         <div class="form-alert-input">
-            <input type="number" name="total_hours" id="total_hours" placeholder="Total Hours" required />
+            <input type="number" value="1" name="total_hours" id="total_hours" placeholder="Total Hours" required />
         </div>
     </div>
 
@@ -68,16 +74,15 @@
             <label for="discount_price">Discount Price</label>
         </div>
         <div class="form-alert-input">
-            <input type="text" name="discount_price" id="discount_price" placeholder="Discount Price" />
+            <input type="text" value="1" name="discount_price" id="discount_price" placeholder="Discount Price" />
         </div>
     </div>
-
     <div class="form-element success">
         <div class="form-alert">
             <label for="final_price">Final Price</label>
         </div>
         <div class="form-alert-input">
-            <input type="text" name="final_price" id="final_price" placeholder="Final Price" required />
+            <input type="text" value="1" name="final_price" id="final_price" placeholder="Final Price" required />
         </div>
     </div>
 
@@ -86,7 +91,7 @@
             <label for="description">Description</label>
         </div>
         <div class="form-alert-input">
-            <textarea name="description" rows="5" class="form-control" id="description" placeholder="Course Description" required></textarea>
+            <textarea name="description" rows="5" class="form-control" id="description" placeholder="Course Description" required>instructor_id</textarea>
         </div>
     </div>
 
@@ -97,7 +102,7 @@
 
                  </div>
              </div>
-            
+
          </div>
      </div>
  </section>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\categoryModel;
+use App\Models\courseAddModel;
 use App\Models\user;
 use App\Models\profileModel;
 use Illuminate\Support\Facades\Auth; // Import the Auth facade
@@ -14,7 +16,9 @@ class visitorsController extends Controller
     //
     public function index()
     {
-        return view('visitors.index');
+        $categoryModel = categoryModel::get();
+
+        return view('visitors.index', compact('categoryModel'));
     }
     public function courseDetail()
     {
@@ -79,9 +83,9 @@ class visitorsController extends Controller
     }
     public function instructorProfile()
     {
-        $profile= profileModel::where('user_id',Auth::user()->id)->first();
+        $profile = profileModel::where('user_id', Auth::user()->id)->first();
 
-        return view('visitors.instructor-profile',compact('profile'));
+        return view('visitors.instructor-profile', compact('profile'));
     }
     public function instructorForm()
     {
@@ -112,30 +116,30 @@ class visitorsController extends Controller
     {
         $user = user::get();
         $profile = profileModel::where('user_id', Auth::user()->id)->first();
-        return view('visitors.editInstructorProfile', compact('user','profile'));
+        return view('visitors.editInstructorProfile', compact('user', 'profile'));
     }
     public function editInstructorProfileSubmit(Request $request)
     {
         // Retrieve the profile model by user_id or create a new instance
         $profile = ProfileModel::where('user_id', $request->user_id)->first();
-    
+
         if (!$profile) {
             // Create a new profile if none exists
             $profile = new ProfileModel;
             $profile->user_id = $request->user_id;
         }
-    
+
         // Handle common fields
         $profile->about = $request->about;
         $profile->skill = $request->skill;
         $profile->phone_number = $request->phone_number;
         $profile->nationality = $request->nationality;
-    
+
         // Handle empty or null values for education
         $education_titles = array_filter($request->education_title);
         $education_descriptions = array_filter($request->education_description);
         $education_dates = array_filter($request->education_date);
-    
+
         // Only update education fields if new values are provided
         if (!empty($education_titles)) {
             $profile->education_title = implode(',', $education_titles);
@@ -146,12 +150,12 @@ class visitorsController extends Controller
         if (!empty($education_dates)) {
             $profile->education_date = implode(',', $education_dates);
         }
-    
+
         // Handle empty or null values for experiences
         $experience_titles = array_filter($request->experience_title);
         $experience_descriptions = array_filter($request->experience_description);
         $experience_dates = array_filter($request->experience_date);
-    
+
         // Only update experience fields if new values are provided
         if (!empty($experience_titles)) {
             $profile->experience_title = implode(',', $experience_titles);
@@ -162,21 +166,21 @@ class visitorsController extends Controller
         if (!empty($experience_dates)) {
             $profile->experience_date = implode(',', $experience_dates);
         }
-    
+
         // Handle image upload
         if ($request->hasFile('image')) {
             $image_path = rand(0, 9999) . time() . '.' . $request->image->getClientOriginalName();
             $request->file('image')->move(public_path('uploads'), $image_path);
             $profile->image = $image_path;
         }
-    
+
         // Save the profile instance
         $profile->save();
-    
+
         // Optionally, you can use dd($profile); here for debugging
         return redirect()->back();
     }
-    
+
 
 
     public function editStudentsProfileSubmit(Request $request)
@@ -219,9 +223,47 @@ class visitorsController extends Controller
     }
     public function courseAdd()
     {
-        return view('visitors.courseadd');
+        $categoryModel = categoryModel::get();
+        return view('visitors.courseadd', compact('categoryModel'));
+    }
+    public function courseFormSubmit(Request $request)
+    {
+        $courseAddModel = new CourseAddModel();
+        $courseAddModel->title = $request->title;
+
+        if ($request->hasFile('image')) {
+            $image_path = rand(0, 9999) . time() . '.' . $request->image->getClientOriginalExtension();
+            $request->file('image')->move(public_path('uploads'), $image_path);
+            $courseAddModel->image = $image_path;
+        }
+
+        if ($request->hasFile('video')) {
+            $video_path = $request->file('video')->store('uploads', 'public');
+            $courseAddModel->video = $video_path;
+        }
+
+        $courseAddModel->total_lesson = $request->total_lesson;
+        $courseAddModel->total_hours = $request->total_hours;
+        $courseAddModel->discount_price = $request->discount_price;
+        $courseAddModel->final_price = $request->final_price;
+        $courseAddModel->instructor_id = $request->instructor_id;
+        $courseAddModel->description = $request->description;
+
+
+    if ($request->filled('inputCategory')) {
+        $categoryModel = new CategoryModel();
+        $categoryModel->name = $request->inputCategory;
+        $categoryModel->save();
+
+        // Assign the category_id to the courseAddModel
+        $courseAddModel->category = $categoryModel->id;
+    } else {
+        // Assign the category_id from the select dropdown
+        $courseAddModel->category = $request->category;
     }
 
+        $courseAddModel->save();
+        return redirect()->back();
 
-    
+    }
 }
