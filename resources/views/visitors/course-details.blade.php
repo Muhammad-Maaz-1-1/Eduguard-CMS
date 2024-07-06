@@ -12,22 +12,27 @@
                         <a href="#" class="fs-6 text-secondary">Course</a>
                     </li>
                     <li class="breadcrumb-item fs-6 text-secondary d-none d-lg-inline-block" aria-current="page">
-                        Gamification: Motivation Psychology & The Art of Engagement
+                        {{$courseAddModel->title}}
                     </li>
                 </ol>
             </nav>
             <div class="row event-sub-section-main">
                 <div class="col-lg-8">
                     <h3 class="font-title--sm">
-                        Gamification: Motivation Psychology & The Art of Engagement
+                        {{$courseAddModel->title}}
                     </h3>
                     <div class="created-by d-flex align-items-center">
                         <div class="created-by-image me-3">
-                            <img src="{{ asset('assets') }}/dist/images/courses/profile.png" alt="" />
+                            @if ($profile && !$profile->image == null)
+                            <img  style="width: 70px;height:70px;border-radius:200px;" src="{{ asset('uploads'.'/'.$profile->image) }}" alt="" />
+                            @else
+                            <img style="width: 70px;height:70px;border-radius:200px;" src="{{ asset('assets') }}/src/images/teacher.png" alt="Instructor" />
+
+                            @endif
                         </div>
                         <div class="created-by-text">
                             <p>Created by</p>
-                            <h6><a href="instructor-profile.html">Martin Bator</a></h6>
+                            <h6><a href="instructor-profile.html">{{Auth::user()->name}}</a></h6>
                         </div>
                     </div>
                 </div>
@@ -44,7 +49,7 @@
                                 <path d="M9 16.5C13.1421 16.5 16.5 13.1421 16.5 9C16.5 4.85786 13.1421 1.5 9 1.5C4.85786 1.5 1.5 4.85786 1.5 9C1.5 13.1421 4.85786 16.5 9 16.5Z" stroke="#FFC91B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M9 4.5V9L12 10.5" stroke="#FFC91B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            <p class="font-para--md">3 Hours</p>
+                            <p class="font-para--md">{{$courseAddModel->total_hours}} Hours</p>
                         </div>
                     </div>
                     <div class="icon-with-date d-flex align-items-lg-cente mb-0">
@@ -60,7 +65,7 @@
                                 <path d="M1.5 2.25H6C6.79565 2.25 7.55871 2.56607 8.12132 3.12868C8.68393 3.69129 9 4.45435 9 5.25V15.75C9 15.1533 8.76295 14.581 8.34099 14.159C7.91903 13.7371 7.34674 13.5 6.75 13.5H1.5V2.25Z" stroke="#00AF91" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M16.5 2.25H12C11.2044 2.25 10.4413 2.56607 9.87868 3.12868C9.31607 3.69129 9 4.45435 9 5.25V15.75C9 15.1533 9.23705 14.581 9.65901 14.159C10.081 13.7371 10.6533 13.5 11.25 13.5H16.5V2.25Z" stroke="#00AF91" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            <p class="font-para--md">35 Lesson</p>
+                            <p class="font-para--md">{{$courseAddModel->total_lesson}} Lesson</p>
                         </div>
                     </div>
                 </div>
@@ -76,8 +81,8 @@
                 <div class="col-lg-8">
                     <div class="course-overview">
                         <div class="course-overview-image">
-                            <img src="{{ asset('assets') }}/dist/images/courses/thumb.jpg" alt="img" />
-                            <a class="popup-video play-button" href="https://www.youtube.com/watch?v=3CvFz5j1Krk">
+                            <img src="{{ asset('uploads/'.$courseAddModel->image) }}" alt="img" />
+                            <a class="popup-video play-button" href="{{ asset('uploads/lecture_videos/'.$courseAddModel->video) }}">
                                 <svg width="23" height="27" viewBox="0 0 23 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M22.2159 15.9113C22.1179 16.0425 21.6605 16.6002 21.3011 16.9611L21.1051 17.158C18.3608 20.1434 11.5327 24.6379 8.0696 26.0814C8.0696 26.1142 6.01136 26.9672 5.03125 27H4.90057C3.39773 27 1.9929 26.147 1.27415 24.7691C0.882102 24.0146 0.522727 21.8165 0.490057 21.7837C0.196023 19.8153 0 16.8004 0 13.4836C0 10.0061 0.196023 6.85662 0.555398 4.92102C0.555398 4.88821 0.914773 3.11665 1.14347 2.52612C1.50284 1.67315 2.15625 0.951397 2.97301 0.492102C3.62642 0.164034 4.3125 0 5.03125 0C5.78267 0.0328068 7.1875 0.52819 7.7429 0.754557C11.402 2.19806 18.3935 6.92224 21.0724 9.80923C21.5298 10.2685 22.0199 10.8262 22.1506 10.9575C22.706 11.6792 23 12.565 23 13.5197C23 14.3694 22.7386 15.2224 22.2159 15.9113Z" fill="#1089FF"></path>
                                 </svg>
@@ -110,86 +115,9 @@
                                 <!-- Course Overview Starts Here -->
                                 <div class="row course-overview-main mt-4">
                                     <div class="course-overview-main-item">
-                                        <h6 class="font-title--card">Description</h6>
-                                        <p class="mb-3 font-para--lg">
-                                            Duis placerat eleifend leo nec mattis. Phasellus scelerisque arcu quis feugiat efficitur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer laoreet est eget est sagittis, et
-                                            scelerisque quam convallis. Praesent at tortor facilisis, tempus ex quis, tempor arcu. Duis id velit mattis diam fermentum tincidunt. Sed et vehicula lectus.
-                                        </p>
-                                        <p class="font-para--lg">
-                                            Sed ut tincidunt velit, eu bibendum turpis. Fusce in posuere felis, sed lobortis elit. Integer mollis sodales congue
-                                        </p>
+                                      {{$courseAddModel->description}}
                                     </div>
-                                    <div class="course-overview-main-item">
-                                        <h6 class="font-title--card">Requirments</h6>
-                                        <p class="mb-2 font-para--lg">
-                                            Donec tristique ligula id tellus porta, dapibus imperdiet mi ullamcorper. Vivamus suscipit, nisi eu tincidunt interdum.
-                                        </p>
-                                        <p class="bullets-line font-para--lg"><span></span>Mauris ut libero ut mauris sagittis consectetur quis eget elit.</p>
-                                        <p class="bullets-line font-para--lg"><span></span>Praesent egestas sapien vel ante gravida pharetra.</p>
-                                        <p class="bullets-line font-para--lg"><span></span>Pellentesque sit amet odio interdum, mollis eros id, tincidunt augue.</p>
-                                        <p class="bullets-line font-para--lg"><span></span> Donec eget nunc vel nisl blandit facilisis.</p>
-                                        <p class="bullets-line font-para--lg"><span></span>Quisque faucibus nisi eu diam placerat, dapibus ullamcorper augue mollis.</p>
-                                    </div>
-                                    <div class="course-overview-main-item">
-                                        <h6 class="font-title--card">Who This Course is For</h6>
-                                        <p class="mb-2 font-para--lg">
-                                            Sed arcu odio, ornare ac porttitor at, placerat nec dui. Nulla nec euismod tellus. Donec facilisis condimentum commodo. Pellentesque ultricies dolor ut magna aliquet, vitae sodales massa
-                                            euismod.
-                                        </p>
-                                        <p class="bullets-line">
-                                            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M1 5L13 5" stroke="#202029" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M9 0.999999L13 5L9 9" stroke="#202029" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                            This Course for Complete Beginner Students who want learn UI/UX.
-                                        </p>
-                                        <p class="bullets-line">
-                                            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M1 5L13 5" stroke="#202029" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M9 0.999999L13 5L9 9" stroke="#202029" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                            Nunc a ex sodales sem accumsan tristique.
-                                        </p>
-                                        <p class="bullets-line">
-                                            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M1 5L13 5" stroke="#202029" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M9 0.999999L13 5L9 9" stroke="#202029" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                            Suspendisse eget eros eget leo pellentesque ullamcorper ac non augue.
-                                        </p>
-                                    </div>
-                                    <div class="course-overview-main-item mb-0">
-                                        <h6 class="font-title--card">What You Will be Learn</h6>
-                                        <p class="mb-2 font-para--lg">
-                                            Sed arcu odio, ornare ac porttitor at, placerat nec dui. Nulla nec euismod tellus. Donec facilisis condimentum commodo. Pellentesque ultricies dolor ut magna aliquet, vitae sodales massa
-                                            euismod.
-                                        </p>
-                                        <p class="bullets-line">
-                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M15 4.5L6.75 13.5L3 9.40909" stroke="#00AF91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                            This Course for Complete Beginner Students who want learn UI/UX.
-                                        </p>
-                                        <p class="bullets-line">
-                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M15 4.5L6.75 13.5L3 9.40909" stroke="#00AF91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
 
-                                            Nunc a ex sodales sem accumsan tristique.
-                                        </p>
-                                        <p class="bullets-line">
-                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M15 4.5L6.75 13.5L3 9.40909" stroke="#00AF91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                            Suspendisse eget eros eget leo pellentesque ullamcorper ac non augue.
-                                        </p>
-                                        <p class="bullets-line mb-0">
-                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M15 4.5L6.75 13.5L3 9.40909" stroke="#00AF91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                            Suspendisse eget eros eget leo pellentesque ullamcorper ac non augue.
-                                        </p>
-                                    </div>
                                 </div>
                                 <!-- Course Overview Ends Here -->
                             </div>
@@ -197,13 +125,23 @@
                                 <!-- Course Curriculum Area Starts Here -->
                                 <div class="row">
                                     <div class="course-curriculum-area">
+                                        @if ($chapterModel && !$chapterModel->chapter_heading == null)
+                                        @php
+                                            $chapter_headings = explode(',', $chapterModel->chapter_heading);
+                                            $lecture_titles = explode(',', $chapterModel->lecture_title);
+                                            $lecture_videos = explode(',', $chapterModel->lecture_video);
+                                        @endphp
+
+                                        @foreach ($chapter_headings as $index => $title)
+
+
                                         <div class="curriculum-area">
-                                            <div class="curriculum-area-top" role="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                            <div class="curriculum-area-top" role="button" data-bs-toggle="collapse" data-bs-target="#{{ $title }}" aria-expanded="false" aria-controls="{{ $title }}">
                                                 <div class="curriculum-area-top-start">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                                         <path d="M15.8332 7.08337L9.99984 12.9167L4.1665 7.08337" stroke="#42414B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                     </svg>
-                                                    <p class="font-para--lg">Get Started</p>
+                                                    <p class="font-para--lg">{{$title}}</p>
                                                 </div>
                                                 <div class="curriculum-area-top-end">
                                                     <div class="total-lesson">
@@ -211,7 +149,7 @@
                                                             <path d="M1.5 2.75H6C6.79565 2.75 7.55871 3.06607 8.12132 3.62868C8.68393 4.19129 9 4.95435 9 5.75V16.25C9 15.6533 8.76295 15.081 8.34099 14.659C7.91903 14.2371 7.34674 14 6.75 14H1.5V2.75Z" stroke="#00AF91" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                                                             <path d="M16.5 2.75H12C11.2044 2.75 10.4413 3.06607 9.87868 3.62868C9.31607 4.19129 9 4.95435 9 5.75V16.25C9 15.6533 9.23705 15.081 9.65901 14.659C10.081 14.2371 10.6533 14 11.25 14H16.5V2.75Z" stroke="#00AF91" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                                                         </svg>
-                                                        <p>4 Lesson</p>
+                                                        <p>{{$chapterModel->count()}} Lesson</p>
                                                     </div>
                                                     <div class="total-hours">
                                                         <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -223,96 +161,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="curriculum-area-bottom collapse show" id="collapse1">
-                                                <div class="curriculum-description">
-                                                    <div class="curriculum-description-start">
-                                                        <p>
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play-circle">
-                                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                                                                </svg>
-                                                            </a>
-                                                            <a href="#">1. Introduction to Adobe XD</a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="curriculum-description-end">
-                                                        <p>12:34</p>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div class="curriculum-description">
-                                                    <div class="curriculum-description-start">
-                                                        <p>
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play-circle">
-                                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                                                                </svg>
-                                                            </a>
-                                                            <a href="#">1. Introduction to Adobe XD</a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="curriculum-description-end">
-                                                        <p>12:34</p>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div class="curriculum-description active">
-                                                    <div class="curriculum-description-start">
-                                                        <p>
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play-circle">
-                                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                                                                </svg>
-                                                            </a>
-                                                            <a href="#">1. Introduction to Adobe XD</a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="curriculum-description-end">
-                                                        <p>12:34</p>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="curriculum-area">
-                                            <div class="curriculum-area-top collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                                                <div class="curriculum-area-top-start">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                        <path d="M15.8332 7.08337L9.99984 12.9167L4.1665 7.08337" stroke="#42414B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    </svg>
-                                                    <p class="font-para--lg">The Project Brief</p>
-                                                </div>
-                                                <div class="curriculum-area-top-end">
-                                                    <div class="total-lesson">
-                                                        <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M1.5 2.75H6C6.79565 2.75 7.55871 3.06607 8.12132 3.62868C8.68393 4.19129 9 4.95435 9 5.75V16.25C9 15.6533 8.76295 15.081 8.34099 14.659C7.91903 14.2371 7.34674 14 6.75 14H1.5V2.75Z" stroke="#00AF91" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M16.5 2.75H12C11.2044 2.75 10.4413 3.06607 9.87868 3.62868C9.31607 4.19129 9 4.95435 9 5.75V16.25C9 15.6533 9.23705 15.081 9.65901 14.659C10.081 14.2371 10.6533 14 11.25 14H16.5V2.75Z" stroke="#00AF91" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                        <p>11 Lesson</p>
-                                                    </div>
-                                                    <div class="total-hours">
-                                                        <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M9 17C13.1421 17 16.5 13.6421 16.5 9.5C16.5 5.35786 13.1421 2 9 2C4.85786 2 1.5 5.35786 1.5 9.5C1.5 13.6421 4.85786 17 9 17Z" stroke="#FFC91B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M9 5V9.5L12 11" stroke="#FFC91B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
+                                            <div class="curriculum-area-bottom collapse show" id="{{ $title }}">
 
-                                                        <p>9H 18M</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="curriculum-area-bottom collapse" id="collapse2">
+                                                @foreach ( $lecture_titles as $lectureTitles )
                                                 <div class="curriculum-description">
                                                     <div class="curriculum-description-start">
                                                         <p>
@@ -322,7 +173,7 @@
                                                                     <polygon points="10 8 16 12 10 16 10 8"></polygon>
                                                                 </svg>
                                                             </a>
-                                                            <a href="#">1. Introduction to Adobe XD</a>
+                                                            <a href="#">{{ $lectureTitles ?? '' }}</a>
                                                         </p>
                                                     </div>
                                                     <div class="curriculum-description-end">
@@ -333,137 +184,15 @@
                                                         </svg>
                                                     </div>
                                                 </div>
-                                                <div class="curriculum-description">
-                                                    <div class="curriculum-description-start">
-                                                        <p>
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play-circle">
-                                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                                                                </svg>
-                                                            </a>
-                                                            <a href="#">1. Introduction to Adobe XD</a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="curriculum-description-end">
-                                                        <p>12:34</p>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div class="curriculum-description active">
-                                                    <div class="curriculum-description-start">
-                                                        <p>
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play-circle">
-                                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                                                                </svg>
-                                                            </a>
-                                                            <a href="#">1. Introduction to Adobe XD</a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="curriculum-description-end">
-                                                        <p>12:34</p>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="curriculum-area mb-0">
-                                            <div class="curriculum-area-top collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                                <div class="curriculum-area-top-start">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                        <path d="M15.8332 7.08337L9.99984 12.9167L4.1665 7.08337" stroke="#42414B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                    </svg>
-                                                    <p class="font-para--lg">Low Fidelity Wireframes</p>
-                                                </div>
-                                                <div class="curriculum-area-top-end">
-                                                    <div class="total-lesson">
-                                                        <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M1.5 2.75H6C6.79565 2.75 7.55871 3.06607 8.12132 3.62868C8.68393 4.19129 9 4.95435 9 5.75V16.25C9 15.6533 8.76295 15.081 8.34099 14.659C7.91903 14.2371 7.34674 14 6.75 14H1.5V2.75Z" stroke="#00AF91" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M16.5 2.75H12C11.2044 2.75 10.4413 3.06607 9.87868 3.62868C9.31607 4.19129 9 4.95435 9 5.75V16.25C9 15.6533 9.23705 15.081 9.65901 14.659C10.081 14.2371 10.6533 14 11.25 14H16.5V2.75Z" stroke="#00AF91" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
-                                                        <p>3 Lesson</p>
-                                                    </div>
-                                                    <div class="total-hours">
-                                                        <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M9 17C13.1421 17 16.5 13.6421 16.5 9.5C16.5 5.35786 13.1421 2 9 2C4.85786 2 1.5 5.35786 1.5 9.5C1.5 13.6421 4.85786 17 9 17Z" stroke="#FFC91B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                                                            <path d="M9 5V9.5L12 11" stroke="#FFC91B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                                                        </svg>
+                                                @endforeach
 
-                                                        <p>10:20</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="curriculum-area-bottom collapse" id="collapseExample">
-                                                <div class="curriculum-description">
-                                                    <div class="curriculum-description-start">
-                                                        <p>
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play-circle">
-                                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                                                                </svg>
-                                                            </a>
-                                                            <a href="#">1. Introduction to Adobe XD</a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="curriculum-description-end">
-                                                        <p>12:34</p>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div class="curriculum-description">
-                                                    <div class="curriculum-description-start">
-                                                        <p>
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play-circle">
-                                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                                                                </svg>
-                                                            </a>
-                                                            <a href="#">1. Introduction to Adobe XD</a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="curriculum-description-end">
-                                                        <p>12:34</p>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div class="curriculum-description active">
-                                                    <div class="curriculum-description-start">
-                                                        <p>
-                                                            <a href="#">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play-circle">
-                                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
-                                                                </svg>
-                                                            </a>
-                                                            <a href="#">1. Introduction to Adobe XD</a>
-                                                        </p>
-                                                    </div>
-                                                    <div class="curriculum-description-end">
-                                                        <p>12:34</p>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
+
                                             </div>
                                         </div>
+                                        @endforeach
+                                        @else
+
+                                        @endif
                                     </div>
                                 </div>
                                 <!-- Course Curriculum Area Ends Here -->
@@ -475,13 +204,18 @@
                                         <div class="course-instructor">
                                             <div class="course-instructor-info">
                                                 <div class="instructor-image">
-                                                    <img src="{{ asset('assets') }}/dist/images/courses/courseinstructor.png" alt="Instructor" />
+                                                    @if ($profile && !$profile->image == null)
+                                                    <img  style="width: 120px;height:120px;border-radius:200px;" src="{{ asset('uploads'.'/'.$profile->image) }}" alt="" />
+                                                    @else
+                                                    <img style="width: 120px;height:120px;border-radius:200px;" src="{{ asset('assets') }}/src/images/teacher.png" alt="Instructor" />
+
+                                                    @endif
                                                 </div>
                                                 <div class="instructor-text">
                                                     <h6 class="font-title--xs mb-0">
-                                                        <a href="instructor-profile.html">Gartin Bator</a>
+                                                        <a href="instructor-profile.html">{{Auth::user()->name}}</a>
                                                     </h6>
-                                                    <p class="font-para--md">Senior Teacher</p>
+                                                    <p class="font-para--md">{{$profile->skill??''}}</p>
                                                     <div class="d-flex align-items-center instructor-text-bottom">
                                                         <div class="d-flex align-items-center ratings-icon">
                                                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -495,13 +229,13 @@
                                                                 <path d="M16.5 2.25H12C11.2044 2.25 10.4413 2.56607 9.87868 3.12868C9.31607 3.69129 9 4.45435 9 5.25V15.75C9 15.1533 9.23705 14.581 9.65901 14.159C10.081 13.7371 10.6533 13.5 11.25 13.5H16.5V2.25Z" stroke="#00AF91" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                                                             </svg>
 
-                                                            <p class="font-para--md">5 Courses</p>
+                                                            <p class="font-para--md">11 Courses</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <p class="lead-p font-para--lg">
-                                                Adobe Certified Instructor & Adobe Certified Expert.
+                                             {{$profile->description??''}}
                                             </p>
                                             <p class="font-para--md">
                                                 Joe has been preaching and practicing the gospel of User Experience (UX) to Fortune 100, 500 and Government organizations for nearly three decades. That work includes commercial industry
@@ -1547,11 +1281,17 @@
                         <div class="cart">
                             <div class="cart__price">
                                 <div class="current-price">
-                                    <h3 class="font-title--sm">$19.99</h3>
-                                    <p><del>$199.99</del></p>
+                                    <h3 class="font-title--sm">{{$courseAddModel->discount_price}}</h3>
+                                    <p><del>{{$courseAddModel->final_price}}</del></p>
                                 </div>
                                 <div class="current-discount">
-                                    <p class="font-para--md">90% off</p>
+                                    <p class="font-para--md">
+                                        @if ($discountPercentageFormatted && !$discountPercentageFormatted == null)
+{{$discountPercentageFormatted}}
+                                        @else
+
+                                        @endif
+                                    </p>
                                 </div>
                             </div>
                             <div class="cart__checkout-process">

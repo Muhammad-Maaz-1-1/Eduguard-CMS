@@ -3,7 +3,13 @@
 .addCourse .form-element.success {
   width: 48%;
 }
-
+span.tag {
+    position: absolute;
+    left: auto;
+    right: 0;
+    padding: 8px 20px;
+    border-radius: 4px;
+}
 .addCourse form {
   display: flex;
   flex-wrap: wrap;

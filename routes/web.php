@@ -5,7 +5,7 @@ use App\Http\Controllers\visitorsController;
 use App\Http\Controllers\adminController;
 
 Route::get('/',[visitorsController::class,'index'])->name('home');
-Route::get('/course/detail',[visitorsController::class,'courseDetail'])->name('course_detail');
+Route::get('/course/detail/{id?}',[visitorsController::class,'courseDetail'])->name('course_detail');
 Route::get('/courses',[visitorsController::class,'courses'])->name('courses');
 Route::get('/about',[visitorsController::class,'about'])->name('about');
 Route::get('/contact',[visitorsController::class,'contact'])->name('contact');
@@ -25,6 +25,11 @@ Route::post('/students/edit/profile/submit',[visitorsController::class,'editStud
 Route::get('/watch',[visitorsController::class,'watch'])->name('watch');
 Route::get('/instructor/course/add',[visitorsController::class,'courseAdd'])->name('course_add');
 Route::post('/instructor/course/submit',[visitorsController::class,'courseFormSubmit'])->name('course_form_submit');
+Route::get('/instructor/course/chapters/{id}',[visitorsController::class,'chaptersAdd'])->name('chapters_add');
+Route::get('/instructor/course/chapters/{id}',[visitorsController::class,'chaptersAdd'])->name('chapters_add');
+Route::post('/instructor/course/chapters/submit',[visitorsController::class,'chaptersSubmit'])->name('chapters_submit');
+Route::get('/instructor/course/{id}/published',[visitorsController::class,'coursePublished'])->name('course_published');
+
 
 
 // admin panel

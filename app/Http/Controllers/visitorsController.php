@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\categoryModel;
+use App\Models\Chapter;
+use App\Models\chapterModel;
 use App\Models\courseAddModel;
+use App\Models\Lecture;
 use App\Models\user;
 use App\Models\profileModel;
 use Illuminate\Support\Facades\Auth; // Import the Auth facade
 use Illuminate\Http\RedirectResponse;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class visitorsController extends Controller
 {
@@ -20,13 +24,34 @@ class visitorsController extends Controller
 
         return view('visitors.index', compact('categoryModel'));
     }
-    public function courseDetail()
+    public function courseDetail($id)
     {
-        return view('visitors.course-details');
+        // Assuming you're fetching the course by its ID
+        $courseAddModel = CourseAddModel::find($id);
+        // Fetching user profile
+        $profile = ProfileModel::where('user_id', Auth::user()->id)->first();
+        $chapterModel = Chapter::where('course_id', $id)->first();
+        // Convert final_price and discount_price to numeric values
+        $finalPrice = (float) str_replace('$', '', $courseAddModel->final_price);
+        $discountPrice = (float) str_replace('$', '', $courseAddModel->discount_price);
+
+        // Calculate discount percentage
+        if ($finalPrice > 0) {
+            $discountPercentage = ((1 - ($discountPrice / $finalPrice)) * 100);
+            $discountPercentageFormatted = round($discountPercentage, 2) . '% off'; // Rounds to 2 decimal places
+        } else {
+            $discountPercentageFormatted = 'Invalid final price';
+        }
+
+        // Return view with course and profile data
+        return view('visitors.course-details', compact('chapterModel', 'courseAddModel', 'profile', 'discountPercentageFormatted'));
     }
+
+
     public function courses()
     {
-        return view('visitors.courses');
+        $courseAddModel = courseAddModel::where('status', true)->get();
+        return view('visitors.courses', compact('courseAddModel'));
     }
     public function about()
     {
@@ -84,8 +109,9 @@ class visitorsController extends Controller
     public function instructorProfile()
     {
         $profile = profileModel::where('user_id', Auth::user()->id)->first();
-
-        return view('visitors.instructor-profile', compact('profile'));
+        $courseAddModel = courseAddModel::where('instructor_id', Auth::user()->id)->get();
+        $profileModel = profileModel::where('user_id', Auth::user()->id)->first();
+        return view('visitors.instructor-profile', compact('profile', 'courseAddModel', 'profileModel'));
     }
     public function instructorForm()
     {
@@ -226,6 +252,34 @@ class visitorsController extends Controller
         $categoryModel = categoryModel::get();
         return view('visitors.courseadd', compact('categoryModel'));
     }
+    public function chaptersAdd($id)
+    {
+        $courseId = $id;
+        $profileModel = ProfileModel::where('user_id', Auth::user()->id)->first();
+        $chapterModel = Chapter::where('course_id', $courseId)->first();
+
+        return view('visitors.chapters', compact('profileModel', 'courseId', 'chapterModel'));
+    }
+    public function coursePublished($id)
+    {
+        $courseAddModel = courseAddModel::where('id', $id)->first();
+        if ($courseAddModel) {
+            // Update the status to '1' (published)
+            $courseAddModel->status = true;
+
+            // Save the changes
+            $courseAddModel->save();
+        }
+        return redirect()->back();
+    }
+    public function chaptersSubmit(Request $request)
+    {
+    }
+
+
+
+
+
     public function courseFormSubmit(Request $request)
     {
         $courseAddModel = new CourseAddModel();
@@ -250,20 +304,19 @@ class visitorsController extends Controller
         $courseAddModel->description = $request->description;
 
 
-    if ($request->filled('inputCategory')) {
-        $categoryModel = new CategoryModel();
-        $categoryModel->name = $request->inputCategory;
-        $categoryModel->save();
+        if ($request->filled('inputCategory')) {
+            $categoryModel = new CategoryModel();
+            $categoryModel->name = $request->inputCategory;
+            $categoryModel->save();
 
-        // Assign the category_id to the courseAddModel
-        $courseAddModel->category = $categoryModel->id;
-    } else {
-        // Assign the category_id from the select dropdown
-        $courseAddModel->category = $request->category;
-    }
+            // Assign the category_id to the courseAddModel
+            $courseAddModel->category = $categoryModel->id;
+        } else {
+            // Assign the category_id from the select dropdown
+            $courseAddModel->category = $request->category;
+        }
 
         $courseAddModel->save();
         return redirect()->back();
-
     }
 }

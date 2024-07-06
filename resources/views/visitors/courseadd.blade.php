@@ -16,7 +16,7 @@
         </div>
         <div class="form-alert-input">
             <input type="text" name="title" id="title" placeholder=" Title " required />
-            <input value="1" type="hidden" value="1" name="instructor_id" value="{{Auth::user()->id}}" id="instructor_id" placeholder="Enter Instructor ID" required />
+            <input type="hidden" name="instructor_id" value="{{Auth::user()->id}}" id="instructor_id" placeholder="Enter Instructor ID" required />
         </div>
     </div>
 

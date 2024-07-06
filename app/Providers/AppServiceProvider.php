@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,8 +18,17 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+
+    public function boot()
     {
-        //
+        // Load the helper file
+        require_once app_path('Helpers/help.php');
+
+        // Share the profileModel with all views
+        View::composer('*', function ($view) {
+            $view->with('profileModel', getProfileModel());
+        });
     }
+
+
 }

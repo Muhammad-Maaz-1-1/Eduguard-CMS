@@ -2,3 +2,7 @@ http://127.0.0.1:8000/instructor/course/add
 category select or input  seekhna hai kaisa user category select kara t ose table ma jaye or agar input field ma category type karta hai to category ka table ma or course ka table ma data jaye
 
 http://127.0.0.1:8000/instructor/edit/profile
+education and experience field practice
+
+
+how to create helper function code add in laravel notes

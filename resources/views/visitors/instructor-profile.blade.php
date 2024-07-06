@@ -6,11 +6,9 @@
              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                  <ol class="breadcrumb bg-transparent mb-0">
                      <li class="breadcrumb-item"><a href="index.html" class="fs-6 text-secondary">Home</a></li>
-                     <li class="breadcrumb-item"><a href="course-search.html" class="fs-6 text-secondary">Courses</a></li>
-                     <li class="breadcrumb-item d-none d-lg-inline-block"><a href="course-details.html"
-                             class="fs-6 text-secondary">Course Detail Instructor</a></li>
+                     <li class="breadcrumb-item"><a href="course-search.html" class="fs-6 text-secondary">Profile</a></li>
                      <li class="breadcrumb-item d-none d-lg-inline-block"><a href="#"
-                             class="fs-6 text-secondary">Kevin Gilbert</a></li>
+                             class="fs-6 text-secondary">{{ Auth::user()->name }}</a></li>
                  </ol>
              </nav>
          </div>
@@ -23,11 +21,11 @@
                  <div class="col-lg-4">
                      <div class="instructor-courses-instructor">
                          <div class="instructor-image mx-auto text-center">
-                            @if ($profile && !$profile->image==null)
-                                 <img src="{{ asset('assets'.'/'.$profile->image) }}" alt="Instructor" />
-                            @else
-                                <img src="{{ asset('assets') }}/src/images/teacher.png" alt="Instructor" />
-                            @endif
+                             @if ($profile && !$profile->image == null)
+                                 <img src="{{ asset('uploads' . '/' . $profile->image) }}" alt="Instructor" />
+                             @else
+                                 <img src="{{ asset('assets') }}/src/images/teacher.png" alt="Instructor" />
+                             @endif
                          </div>
                          <div class="instructor-info text-center">
                              <h5 class="font-title--sm">{{ Auth()->user()->name }}</h5>
@@ -38,8 +36,8 @@
                                      <a href="{{ route('edit_instructor_profile') }}">
                                          Add your skill</a>
                                  @endif
-  <a class="d-block" href="{{ route('edit_instructor_profile') }}">
-                                         Edit Profile</a>
+                                 <a class="d-block" href="{{ route('edit_instructor_profile') }}">
+                                     Edit Profile</a>
                              </p>
                              <ul class="list-inline social-links">
                                  <li class="list-inline-item">
@@ -192,21 +190,20 @@
                          <div class="instructor-qualification">
                              <h6>Education</h6>
                              @if ($profile)
-                                 
-                                @php
-            $education_titles = explode(',', $profile->education_title);
-            $education_descriptions = explode(',', $profile->education_description);
-            $education_dates = explode(',', $profile->education_date);
-        @endphp
-                            @foreach($education_titles as $index => $title)
-                <div class="qualification-info">
-                    <div class="qualification-info-title">
-                        <h6>{{ $title }}</h6>
-                        <p>{{ $education_dates[$index] ?? '' }}</p>
-                    </div>
-                    <p>{{ $education_descriptions[$index] ?? '' }}</p>
-                </div>
-            @endforeach
+                                 @php
+                                     $education_titles = explode(',', $profile->education_title);
+                                     $education_descriptions = explode(',', $profile->education_description);
+                                     $education_dates = explode(',', $profile->education_date);
+                                 @endphp
+                                 @foreach ($education_titles as $index => $title)
+                                     <div class="qualification-info">
+                                         <div class="qualification-info-title">
+                                             <h6>{{ $title }}</h6>
+                                             <p>{{ $education_dates[$index] ?? '' }}</p>
+                                         </div>
+                                         <p>{{ $education_descriptions[$index] ?? '' }}</p>
+                                     </div>
+                                 @endforeach
                              @endif
 
                          </div>
@@ -222,13 +219,14 @@
                                      Nullam mollis semper rutrum. Vestibulum hendrerit nulla vitae velit semper.
                                  </p>
                              </div>
-                           
+
                          </div>
                      </div>
                  </div>
                  <div class="col-lg-8 mt-4 mt-lg-0">
                      <div class="instructor-tabs">
-                         <ul class="nav nav-pills instructor-tabs-pills mb-3 align-items-center flex-nowrap" id="pills-tab" role="tablist">
+                         <ul class="nav nav-pills instructor-tabs-pills mb-3 align-items-center flex-nowrap"
+                             id="pills-tab" role="tablist">
                              <li class="nav-item" role="presentation">
                                  <button class="nav-link active" id="pills-courses-tab" data-bs-toggle="pill"
                                      data-bs-target="#pills-courses" type="button" role="tab"
@@ -240,361 +238,103 @@
                                      aria-selected="false">Review</button>
                              </li>
                              <li class="nav-item" role="presentation" style="width: 80%;text-align: right;">
-                                 <a href="{{ route('course_add') }}" class="button button-lg button--primary p-3 ">ADD NEW COURSE </a>
+                                 <a href="{{ route('course_add') }}" class="button button-lg button--primary p-3 ">ADD
+                                     NEW COURSE </a>
                              </li>
                          </ul>
                          <div class="tab-content" id="pills-tabContent">
                              <div class="tab-pane fade show active" id="pills-courses" role="tabpanel"
                                  aria-labelledby="pills-courses-tab">
                                  <div class="row">
-                                     <div class="col-md-6 mb-4">
-                                         <div class="contentCard contentCard--course">
-                                             <div class="contentCard-top">
-                                                 <a href="course-details.html"><img
-                                                         src="{{ asset('assets') }}/dist/images/courses/demo-img-01.png"
-                                                         alt="images" class="img-fluid" /></a>
-                                             </div>
-                                             <div class="contentCard-bottom">
-                                                 <h5>
-                                                     <a href="course-details.html" class="font-title--card">Chicago
-                                                         International Conference on Education</a>
-                                                 </h5>
-                                                 <div
-                                                     class="contentCard-info d-flex align-items-center justify-content-between">
-                                                     <a href="instructor-profile.html"
-                                                         class="contentCard-user d-flex align-items-center">
-                                                         <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                             alt="client-image" class="rounded-circle" />
-                                                         <p class="font-para--md">Brandon Dias</p>
-                                                     </a>
-                                                     <div class="price">
-                                                         <span>$12</span>
-                                                         <del>$95</del>
+                                     @if ($courseAddModel && $courseAddModel->isNotEmpty())
+                                         @foreach ($courseAddModel as $course)
+                                             <div class="col-md-6 mb-4">
+                                                 <div class="contentCard contentCard--course">
+                                                     <div class="contentCard-top">
+                                                         <a href="{{ route('course_detail', $course->id) }}">
+                                                            <span class="tag bg-primary text-white ">
+                                                                @if ($course->status == 0)
+InActive
+                                                                @else
+                                                                Active
+                                                                @endif
+                                                            </span>
+                                                            <img
+                                                                 src="{{ asset('uploads' . '/' . $course->image) }}"
+                                                                 alt="images" class="img-fluid" /></a>
+
                                                      </div>
-                                                 </div>
-                                                 <div class="contentCard-more">
-                                                     <div class="d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/star.png"
-                                                                 alt="star" />
+                                                     <a href="{{ route('chapters_add', $course->id) }}"
+                                                         class="w-100 text-center">Add Chapters</a>
+
+                                                     <div class="contentCard-bottom">
+                                                         <h5>
+                                                             <a href="course-details.html"
+                                                                 class="font-title--card">{{ $course->title }}</a>
+                                                         </h5>
+                                                         <div
+                                                             class="contentCard-info d-flex align-items-center justify-content-between">
+                                                             <a href="instructor-profile.html"
+                                                                 class="contentCard-user d-flex align-items-center">
+                                                                 @if ($profileModel && !$profileModel->image == null)
+                                                                     <img style="object-fit: contain" width="50px"
+                                                                         height="50px"
+                                                                         src="{{ asset('uploads') . '/' . $profileModel->image }}"
+                                                                         alt="client-image" class="rounded-circle" />
+                                                                 @else
+                                                                     <img width="50px" height="50px"
+                                                                         src="{{ asset('assets') }}/src/images/teacher.png"
+                                                                         alt="client-image" class="rounded-circle" />
+                                                                 @endif
+
+                                                                 <p class="font-para--md">{{ Auth::user()->name }}</p>
+                                                             </a>
+                                                             <div class="price">
+                                                                 <span>{{ $course->discount_price }}</span>
+                                                                 <del>{{ $course->final_price }}</del>
+                                                             </div>
+
                                                          </div>
-                                                         <span>4.5</span>
-                                                     </div>
-                                                     <div class="eye d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/eye.png"
-                                                                 alt="eye" />
+                                                         <div class="contentCard-more">
+                                                             <div class="d-flex align-items-center">
+                                                                 <div class="icon">
+                                                                     <img src="{{ asset('assets') }}/dist/images/icon/star.png"
+                                                                         alt="star" />
+                                                                 </div>
+                                                                 <span>4.5</span>
+                                                             </div>
+                                                             <div class="eye d-flex align-items-center">
+                                                                 <div class="icon">
+                                                                     <img src="{{ asset('assets') }}/dist/images/icon/eye.png"
+                                                                         alt="eye" />
+                                                                 </div>
+                                                                 <span>24,517</span>
+                                                             </div>
+                                                             <div class="book d-flex align-items-center">
+                                                                 <div class="icon">
+                                                                     <img src="{{ asset('assets') }}/dist/images/icon/book.png"
+                                                                         alt="location" />
+                                                                 </div>
+                                                                 <span>{{ $course->total_lesson }} Lesson</span>
+                                                             </div>
+                                                             <div class="clock d-flex align-items-center">
+                                                                 <div class="icon">
+                                                                     <img src="{{ asset('assets') }}/dist/images/icon/Clock.png"
+                                                                         alt="clock" />
+                                                                 </div>
+                                                                 <span>{{ $course->total_hours }} Hours</span>
+                                                             </div>
                                                          </div>
-                                                         <span>24,517</span>
-                                                     </div>
-                                                     <div class="book d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/book.png"
-                                                                 alt="location" />
-                                                         </div>
-                                                         <span>37 Lesson</span>
-                                                     </div>
-                                                     <div class="clock d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/Clock.png"
-                                                                 alt="clock" />
-                                                         </div>
-                                                         <span>3 Hours</span>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                     <div class="col-md-6 mb-4">
-                                         <div class="contentCard contentCard--course">
-                                             <div class="contentCard-top">
-                                                 <a href="course-details.html"><img
-                                                         src="{{ asset('assets') }}/dist/images/courses/demo-img-02.png"
-                                                         alt="images" class="img-fluid" /></a>
-                                             </div>
-                                             <div class="contentCard-bottom">
-                                                 <h5>
-                                                     <a href="course-details.html" class="font-title--card">Chicago
-                                                         International Conference on Education</a>
-                                                 </h5>
-                                                 <div
-                                                     class="contentCard-info d-flex align-items-center justify-content-between">
-                                                     <a href="instructor-profile.html"
-                                                         class="contentCard-user d-flex align-items-center">
-                                                         <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                             alt="client-image" class="rounded-circle" />
-                                                         <p class="font-para--md">Brandon Dias</p>
-                                                     </a>
-                                                     <div class="price">
-                                                         <span>$12</span>
-                                                         <del>$95</del>
-                                                     </div>
-                                                 </div>
-                                                 <div class="contentCard-more">
-                                                     <div class="d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/star.png"
-                                                                 alt="star" />
-                                                         </div>
-                                                         <span>4.5</span>
-                                                     </div>
-                                                     <div class="eye d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/eye.png"
-                                                                 alt="eye" />
-                                                         </div>
-                                                         <span>24,517</span>
-                                                     </div>
-                                                     <div class="book d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/book.png"
-                                                                 alt="location" />
-                                                         </div>
-                                                         <span>37 Lesson</span>
-                                                     </div>
-                                                     <div class="clock d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/Clock.png"
-                                                                 alt="clock" />
-                                                         </div>
-                                                         <span>3 Hours</span>
                                                      </div>
                                                  </div>
                                              </div>
-                                         </div>
-                                     </div>
-                                     <div class="col-md-6 mb-4">
-                                         <div class="contentCard contentCard--course">
-                                             <div class="contentCard-top">
-                                                 <a href="course-details.html"><img
-                                                         src="{{ asset('assets') }}/dist/images/courses/demo-img-03.png"
-                                                         alt="images" class="img-fluid" /></a>
-                                             </div>
-                                             <div class="contentCard-bottom">
-                                                 <h5>
-                                                     <a href="course-details.html" class="font-title--card">Chicago
-                                                         International Conference on Education</a>
-                                                 </h5>
-                                                 <div
-                                                     class="contentCard-info d-flex align-items-center justify-content-between">
-                                                     <a href="instructor-profile.html"
-                                                         class="contentCard-user d-flex align-items-center">
-                                                         <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                             alt="client-image" class="rounded-circle" />
-                                                         <p class="font-para--md">Brandon Dias</p>
-                                                     </a>
-                                                     <div class="price">
-                                                         <span>$12</span>
-                                                         <del>$95</del>
-                                                     </div>
-                                                 </div>
-                                                 <div class="contentCard-more">
-                                                     <div class="d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/star.png"
-                                                                 alt="star" />
-                                                         </div>
-                                                         <span>4.5</span>
-                                                     </div>
-                                                     <div class="eye d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/eye.png"
-                                                                 alt="eye" />
-                                                         </div>
-                                                         <span>24,517</span>
-                                                     </div>
-                                                     <div class="book d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/book.png"
-                                                                 alt="location" />
-                                                         </div>
-                                                         <span>37 Lesson</span>
-                                                     </div>
-                                                     <div class="clock d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/Clock.png"
-                                                                 alt="clock" />
-                                                         </div>
-                                                         <span>3 Hours</span>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                     <div class="col-md-6 mb-4">
-                                         <div class="contentCard contentCard--course">
-                                             <div class="contentCard-top">
-                                                 <a href="course-details.html"><img
-                                                         src="{{ asset('assets') }}/dist/images/courses/demo-img-04.png"
-                                                         alt="images" class="img-fluid" /></a>
-                                             </div>
-                                             <div class="contentCard-bottom">
-                                                 <h5>
-                                                     <a href="course-details.html" class="font-title--card">Chicago
-                                                         International Conference on Education</a>
-                                                 </h5>
-                                                 <div
-                                                     class="contentCard-info d-flex align-items-center justify-content-between">
-                                                     <a href="instructor-profile.html"
-                                                         class="contentCard-user d-flex align-items-center">
-                                                         <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                             alt="client-image" class="rounded-circle" />
-                                                         <p class="font-para--md">Brandon Dias</p>
-                                                     </a>
-                                                     <div class="price">
-                                                         <span>$12</span>
-                                                         <del>$95</del>
-                                                     </div>
-                                                 </div>
-                                                 <div class="contentCard-more">
-                                                     <div class="d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/star.png"
-                                                                 alt="star" />
-                                                         </div>
-                                                         <span>4.5</span>
-                                                     </div>
-                                                     <div class="eye d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/eye.png"
-                                                                 alt="eye" />
-                                                         </div>
-                                                         <span>24,517</span>
-                                                     </div>
-                                                     <div class="book d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/book.png"
-                                                                 alt="location" />
-                                                         </div>
-                                                         <span>37 Lesson</span>
-                                                     </div>
-                                                     <div class="clock d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/Clock.png"
-                                                                 alt="clock" />
-                                                         </div>
-                                                         <span>3 Hours</span>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                     <div class="col-md-6 mb-4">
-                                         <div class="contentCard contentCard--course">
-                                             <div class="contentCard-top">
-                                                 <a href="course-details.html"><img
-                                                         src="{{ asset('assets') }}/dist/images/courses/demo-img-05.png"
-                                                         alt="images" class="img-fluid" /></a>
-                                             </div>
-                                             <div class="contentCard-bottom">
-                                                 <h5>
-                                                     <a href="course-details.html" class="font-title--card">Chicago
-                                                         International Conference on Education</a>
-                                                 </h5>
-                                                 <div
-                                                     class="contentCard-info d-flex align-items-center justify-content-between">
-                                                     <a href="instructor-profile.html"
-                                                         class="contentCard-user d-flex align-items-center">
-                                                         <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                             alt="client-image" class="rounded-circle" />
-                                                         <p class="font-para--md">Brandon Dias</p>
-                                                     </a>
-                                                     <div class="price">
-                                                         <span>$12</span>
-                                                         <del>$95</del>
-                                                     </div>
-                                                 </div>
-                                                 <div class="contentCard-more">
-                                                     <div class="d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/star.png"
-                                                                 alt="star" />
-                                                         </div>
-                                                         <span>4.5</span>
-                                                     </div>
-                                                     <div class="eye d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/eye.png"
-                                                                 alt="eye" />
-                                                         </div>
-                                                         <span>24,517</span>
-                                                     </div>
-                                                     <div class="book d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/book.png"
-                                                                 alt="location" />
-                                                         </div>
-                                                         <span>37 Lesson</span>
-                                                     </div>
-                                                     <div class="clock d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/Clock.png"
-                                                                 alt="clock" />
-                                                         </div>
-                                                         <span>3 Hours</span>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                     <div class="col-md-6 mb-4">
-                                         <div class="contentCard contentCard--course">
-                                             <div class="contentCard-top">
-                                                 <a href="course-details.html"><img
-                                                         src="{{ asset('assets') }}/dist/images/courses/demo-img-01.png"
-                                                         alt="images" class="img-fluid" /></a>
-                                             </div>
-                                             <div class="contentCard-bottom">
-                                                 <h5>
-                                                     <a href="course-details.html" class="font-title--card">Chicago
-                                                         International Conference on Education</a>
-                                                 </h5>
-                                                 <div
-                                                     class="contentCard-info d-flex align-items-center justify-content-between">
-                                                     <a href="instructor-profile.html"
-                                                         class="contentCard-user d-flex align-items-center">
-                                                         <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                             alt="client-image" class="rounded-circle" />
-                                                         <p class="font-para--md">Brandon Dias</p>
-                                                     </a>
-                                                     <div class="price">
-                                                         <span>$12</span>
-                                                         <del>$95</del>
-                                                     </div>
-                                                 </div>
-                                                 <div class="contentCard-more">
-                                                     <div class="d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/star.png"
-                                                                 alt="star" />
-                                                         </div>
-                                                         <span>4.5</span>
-                                                     </div>
-                                                     <div class="eye d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/eye.png"
-                                                                 alt="eye" />
-                                                         </div>
-                                                         <span>24,517</span>
-                                                     </div>
-                                                     <div class="book d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/book.png"
-                                                                 alt="location" />
-                                                         </div>
-                                                         <span>37 Lesson</span>
-                                                     </div>
-                                                     <div class="clock d-flex align-items-center">
-                                                         <div class="icon">
-                                                             <img src="{{ asset('assets') }}/dist/images/icon/Clock.png"
-                                                                 alt="clock" />
-                                                         </div>
-                                                         <span>3 Hours</span>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
+                                         @endforeach
+                                     @else
+                                         <h3 class="w-100 text-center mt-4 mb-4">CREATE YOUR FIRST COURSE</h3>
+                                         <a href="{{ route('course_add') }}" class="btn btn-primary text-white">ADD NEW
+                                             COURSE</a>
+                                     @endif
+
                                  </div>
                                  <div class="row">
                                      <div class="pagination-group justify-content-center mt-lg-5 mt-2">
@@ -1135,7 +875,6 @@
                              </div>
                          </div>
                      </div>
-                     <a href="{{ route('course_add') }}" class="btn">ADD NEW COURSE</a>
                  </div>
              </div>
          </div>

@@ -53,7 +53,7 @@
                         <div class="change-image-wizard">
                             <div class="image mx-auto">
                                 @if ($profile && $profile->image)
-                                <img src="{{ asset('uploads') }}/{{ $profile->image }}" alt="User" />
+                                <img width="200px" height="200px" src="{{ asset('uploads') }}/{{ $profile->image }}" alt="User" />
                             @else
                                 <img src="{{ asset('assets') }}/src/images/teacher.png" alt="User" />
                             @endif
