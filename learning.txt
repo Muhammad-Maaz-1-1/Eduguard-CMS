@@ -6,3 +6,27 @@ education and experience field practice
 
 
 how to create helper function code add in laravel notes
+
+
+
+
+C:\xampp\htdocs\Eduguard-CMS\app\Helpers\help.php
+
+if (!function_exists('getCartModel')) {
+    function getCartModel()
+    {
+        if (Auth::check()) {
+            return $cartModel = cartModel::where('user_id', Auth::user()->id)->get();
+        } else {
+            return $cartModel = cartModel::where('user_id', Auth::user()->id)->get();
+        }
+        return null;
+    }
+}
+
+
+
+C:\xampp\htdocs\Eduguard-CMS\app\Providers\AppServiceProvider.php
+    View::composer('*', function ($view) {
+            $view->with('getCartModel', getCartModel());
+        });

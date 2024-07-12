@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\cartModel;
 use App\Models\categoryModel;
 use App\Models\Chapter;
 use App\Models\chapterModel;
@@ -20,16 +21,21 @@ class visitorsController extends Controller
     //
     public function index()
     {
-        $categoryModel = categoryModel::get();
-
-        return view('visitors.index', compact('categoryModel'));
+        $categoryModel = categoryModel::withCount('courses')->get();
+        $courseAddModel = courseAddModel::where('status', true)->get();
+        $design = courseAddModel::where('categoryId', 2)->where('status', true)->get();
+        $development = courseAddModel::where('categoryId', 3)->get();
+        $marketing = courseAddModel::where('categoryId', 4)->get();
+        $instructors = user::where('role', 'Instructor')->get();
+        return view('visitors.index', compact('categoryModel','instructors', 'courseAddModel', 'design', 'development', 'marketing'));
     }
     public function courseDetail($id)
     {
         // Assuming you're fetching the course by its ID
         $courseAddModel = CourseAddModel::find($id);
         // Fetching user profile
-        $profile = ProfileModel::where('user_id', Auth::user()->id)->first();
+        $profile = ProfileModel::where('user_id', $courseAddModel->teacher_id)->first();
+        $userName = user::where('id', $courseAddModel->teacher_id)->first();
         $chapterModel = Chapter::where('course_id', $id)->first();
         // Convert final_price and discount_price to numeric values
         $finalPrice = (float) str_replace('$', '', $courseAddModel->final_price);
@@ -44,15 +50,55 @@ class visitorsController extends Controller
         }
 
         // Return view with course and profile data
-        return view('visitors.course-details', compact('chapterModel', 'courseAddModel', 'profile', 'discountPercentageFormatted'));
+        return view('visitors.course-details', compact('chapterModel', 'courseAddModel', 'profile', 'discountPercentageFormatted', 'userName'));
     }
-
-
-    public function courses()
+    public function searchSubmit(Request $request)
     {
-        $courseAddModel = courseAddModel::where('status', true)->get();
-        return view('visitors.courses', compact('courseAddModel'));
+
+
+        $query = $request->input('search');
+
+        $courseAddModel = courseAddModel::where('status', true)
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('title', 'LIKE', "%$query%")
+                    ->orWhere('description', 'LIKE', "%$query%")
+                    ->orWhere('category', 'LIKE', "%$query%");
+            })
+            ->get();
+        $categoryModel = categoryModel::get();
+
+        return view('visitors.courses', compact('courseAddModel', 'categoryModel'));
     }
+
+    public function courses(Request $request)
+    {
+        $categoryModel = categoryModel::withCount('courses')->get();
+        $courseAddModel = courseAddModel::where('status', true)->get();
+        return view('visitors.courses', compact('courseAddModel', 'categoryModel'));
+    }
+    public function filterCourses(Request $request)
+    {
+        $categories = $request->input('categories');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+
+        $query = CourseAddModel::where('status', true); // Include the status condition here
+
+        if ($categories) {
+            $query->whereIn('categoryId', $categories); // Adjust the column name based on your database
+        }
+
+        if ($minPrice !== null && $maxPrice !== null) {
+            $query->whereBetween('final_price', [$minPrice, $maxPrice]);
+        }
+
+        $courses = $query->with('user.profile')->get(); // Eager load 'user' and 'profile' relationships
+
+        return response()->json($courses); // Return JSON response with courses and associated user profile details
+    }
+
+
+
     public function about()
     {
         return view('visitors.about');
@@ -109,9 +155,8 @@ class visitorsController extends Controller
     public function instructorProfile()
     {
         $profile = profileModel::where('user_id', Auth::user()->id)->first();
-        $courseAddModel = courseAddModel::where('instructor_id', Auth::user()->id)->get();
-        $profileModel = profileModel::where('user_id', Auth::user()->id)->first();
-        return view('visitors.instructor-profile', compact('profile', 'courseAddModel', 'profileModel'));
+        $courseAddModel = courseAddModel::where('teacher_id', Auth::user()->id)->get();
+        return view('visitors.instructor-profile', compact('profile', 'courseAddModel'));
     }
     public function instructorForm()
     {
@@ -119,11 +164,53 @@ class visitorsController extends Controller
     }
     public function checkout()
     {
-        return view('visitors.checkout');
+        $cartModel = CartModel::where('user_id', Auth::id())->get();
+        $subtotal = 0;
+        foreach ($cartModel as $item) {
+            if ($item->course) {
+                $finalPrice = floatval($item->course->final_price);
+                $subtotal += $finalPrice;
+            }
+        }
+
+        $total = $subtotal;
+
+        return view('visitors.checkout', compact('cartModel', 'total'));
     }
     public function cart()
     {
-        return view('visitors.cart');
+        $cartModel = CartModel::where('user_id', Auth::id())->get();
+        $subtotal = 0;
+
+        foreach ($cartModel as $item) {
+            if ($item->course) {
+                $finalPrice = floatval($item->course->final_price);
+                $subtotal += $finalPrice;
+            }
+        }
+
+        $total = $subtotal;
+
+        return view('visitors.cart', compact('cartModel', 'total'));
+    }
+
+
+    public function addToCart(Request $request)
+    {
+
+        $cartModel = new cartModel();
+        $cartModel->course_id = $request->course_id;
+        $cartModel->user_id = Auth::user()->id;
+
+        $cartModel->save();
+
+        return redirect()->route('cart');
+    }
+    public function cartDelete($id)
+    {
+        $cart = cartModel::where('id', $id)->first();
+        $cart->delete();
+        return redirect()->back();
     }
     public function studentsProfile()
     {
@@ -277,9 +364,6 @@ class visitorsController extends Controller
     }
 
 
-
-
-
     public function courseFormSubmit(Request $request)
     {
         $courseAddModel = new CourseAddModel();
@@ -300,7 +384,7 @@ class visitorsController extends Controller
         $courseAddModel->total_hours = $request->total_hours;
         $courseAddModel->discount_price = $request->discount_price;
         $courseAddModel->final_price = $request->final_price;
-        $courseAddModel->instructor_id = $request->instructor_id;
+        $courseAddModel->teacher_id = $request->teacher_id;
         $courseAddModel->description = $request->description;
 
 
@@ -310,10 +394,10 @@ class visitorsController extends Controller
             $categoryModel->save();
 
             // Assign the category_id to the courseAddModel
-            $courseAddModel->category = $categoryModel->id;
+            $courseAddModel->categoryId = $categoryModel->id;
         } else {
-            // Assign the category_id from the select dropdown
-            $courseAddModel->category = $request->category;
+            // Assign the categoryId from the select dropdown
+            $courseAddModel->categoryId = $request->category;
         }
 
         $courseAddModel->save();

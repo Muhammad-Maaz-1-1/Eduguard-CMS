@@ -45,7 +45,7 @@
             <select name="category" id="category" class="mb-2 bg-transparent">
                 <option value="select category">select category</option>
                 @foreach ( $categoryModel as $category )
-                <option value="{{$category->name}}">{{$category->name}} </option>
+                <option value="{{$category->id}}">{{$category->name}} </option>
                 @endforeach
             </select>
             <input type="text" name="inputCategory" id="inputCategory" placeholder="Add New Category"  />

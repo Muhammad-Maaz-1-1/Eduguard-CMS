@@ -26,8 +26,6 @@ return new class extends Migration
             $table->string('final_price')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
-            $table->foreign('instructor_id')->references('id')->on('users')->onDelete('cascade');
-
         });
 
     }

@@ -32,7 +32,7 @@
                         </div>
                         <div class="created-by-text">
                             <p>Created by</p>
-                            <h6><a href="instructor-profile.html">{{Auth::user()->name}}</a></h6>
+                            <h6><a href="instructor-profile.html">{{$userName->name}}</a></h6>
                         </div>
                     </div>
                 </div>
@@ -213,7 +213,7 @@
                                                 </div>
                                                 <div class="instructor-text">
                                                     <h6 class="font-title--xs mb-0">
-                                                        <a href="instructor-profile.html">{{Auth::user()->name}}</a>
+                                                        <a href="instructor-profile.html">{{$userName->name}}</a>
                                                     </h6>
                                                     <p class="font-para--md">{{$profile->skill??''}}</p>
                                                     <div class="d-flex align-items-center instructor-text-bottom">
@@ -1296,13 +1296,28 @@
                             </div>
                             <div class="cart__checkout-process">
                                 <p class="time-left text-center"><span>5 hours</span> to remaining this price</p>
-                                <form action="#">
+                                @if (Auth::check())
+                                <form action="{{route('add_to_cart')}}" method="post">
+                                    @csrf
+
+                                    <input type="hidden" name="user_id" value="{{$courseAddModel->teacher_id}}">
+                                    <input type="hidden" name="course_id" value="{{$courseAddModel->id}}">
                                     <button type="submit" class="button button-lg button--primary w-100">
                                         Add to Cart
                                     </button>
                                     <button type="submit" class="button button-lg button--primary-outline mt-3 w-100">
                                         Buy Now
                                     </button>
+                                    @else
+                                    <a href="{{route('login')}}">
+
+                                        <button type="submit" class="button button-lg button--primary-outline mb-3 w-100 mt-3 w-100">
+                                            First Login Please
+                                        </button>
+                                    </a>
+
+                                    @endif
+
                                 </form>
                             </div>
                             <div class="cart__includes-info">

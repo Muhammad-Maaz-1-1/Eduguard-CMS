@@ -28,6 +28,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $view->with('profileModel', getProfileModel());
         });
+        View::composer('*', function ($view) {
+            $view->with('cartModel', getCartModel());
+        });
     }
 
 

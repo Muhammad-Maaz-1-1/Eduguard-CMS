@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\categoryModel;
+use App\Models\courseAddModel;
 use Illuminate\Http\Request;
+use App\Models\user;
 
 class adminController extends Controller
 {
     //
     public function index()
     {
-        return view('admin.index');
+        $instructor = user::where('role', 'Instructor')->get();
+        $student = user::where('role', 'Student')->get();
+        $activeCourse = courseAddModel::where('status', true)->get();
+        $inActiveCourse = courseAddModel::where('status', false)->get();
+        return view('admin.index', compact('instructor', 'student','activeCourse','inActiveCourse'));
     }
     public function adminLogin()
     {
@@ -18,8 +24,8 @@ class adminController extends Controller
     }
     public function adminCategories()
     {
-        $categoryModel= categoryModel::get();
-        return view('admin.categories',compact('categoryModel'));
+        $categoryModel = categoryModel::get();
+        return view('admin.categories', compact('categoryModel'));
     }
     public function adminCategoriesForm()
     {

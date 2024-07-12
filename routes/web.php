@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\visitorsController;
 use App\Http\Controllers\adminController;
+use App\Http\Controllers\StripePaymentController;
 
 Route::get('/',[visitorsController::class,'index'])->name('home');
 Route::get('/course/detail/{id?}',[visitorsController::class,'courseDetail'])->name('course_detail');
 Route::get('/courses',[visitorsController::class,'courses'])->name('courses');
+Route::get('/search/submit', [visitorsController::class, 'searchSubmit'])->name('search_submit');
 Route::get('/about',[visitorsController::class,'about'])->name('about');
 Route::get('/contact',[visitorsController::class,'contact'])->name('contact');
 Route::get('/login',[visitorsController::class,'login'])->name('login');
@@ -29,7 +31,11 @@ Route::get('/instructor/course/chapters/{id}',[visitorsController::class,'chapte
 Route::get('/instructor/course/chapters/{id}',[visitorsController::class,'chaptersAdd'])->name('chapters_add');
 Route::post('/instructor/course/chapters/submit',[visitorsController::class,'chaptersSubmit'])->name('chapters_submit');
 Route::get('/instructor/course/{id}/published',[visitorsController::class,'coursePublished'])->name('course_published');
-
+Route::post('/course/addtocart/',[visitorsController::class,'addToCart'])->name('add_to_cart');
+Route::get('/course/cart/{id}/delete',[visitorsController::class,'cartDelete'])->name('cart_delete');
+Route::post('/checkout/submit', [StripePaymentController::class, 'stripePost'])->name('stripe.post');
+// routes/web.php
+Route::get('/filter-courses', [visitorsController::class, 'filterCourses'])->name('filterCourses');
 
 
 // admin panel

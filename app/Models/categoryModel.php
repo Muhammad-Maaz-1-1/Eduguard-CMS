@@ -9,4 +9,8 @@ class categoryModel extends Model
 {
     use HasFactory;
     protected $fillabale=['id','name','image','description'];
+    public function courses()
+    {
+        return $this->hasMany(courseAddModel::class, 'categoryId');
+    }
 }

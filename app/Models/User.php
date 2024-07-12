@@ -26,6 +26,13 @@ class User extends Authenticatable
     {
         return $this->hasOne(ProfileModel::class, 'user_id');
     }
+
+
+    public function courses()
+    {
+        return $this->hasMany(CourseAddModel::class, 'teacher_id');
+    }
+    
     /**
      * The attributes that should be hidden for serialization.
      *
