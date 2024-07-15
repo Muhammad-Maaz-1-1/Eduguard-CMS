@@ -229,7 +229,7 @@
                                                                 <path d="M16.5 2.25H12C11.2044 2.25 10.4413 2.56607 9.87868 3.12868C9.31607 3.69129 9 4.45435 9 5.25V15.75C9 15.1533 9.23705 14.581 9.65901 14.159C10.081 13.7371 10.6533 13.5 11.25 13.5H16.5V2.25Z" stroke="#00AF91" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
                                                             </svg>
 
-                                                            <p class="font-para--md">11 Courses</p>
+                                                            <p class="font-para--md">{{$totalCourses}} Courses</p>
                                                         </div>
                                                     </div>
                                                 </div>

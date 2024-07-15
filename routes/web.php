@@ -28,7 +28,6 @@ Route::get('/watch',[visitorsController::class,'watch'])->name('watch');
 Route::get('/instructor/course/add',[visitorsController::class,'courseAdd'])->name('course_add');
 Route::post('/instructor/course/submit',[visitorsController::class,'courseFormSubmit'])->name('course_form_submit');
 Route::get('/instructor/course/chapters/{id}',[visitorsController::class,'chaptersAdd'])->name('chapters_add');
-Route::get('/instructor/course/chapters/{id}',[visitorsController::class,'chaptersAdd'])->name('chapters_add');
 Route::post('/instructor/course/chapters/submit',[visitorsController::class,'chaptersSubmit'])->name('chapters_submit');
 Route::get('/instructor/course/{id}/published',[visitorsController::class,'coursePublished'])->name('course_published');
 Route::post('/course/addtocart/',[visitorsController::class,'addToCart'])->name('add_to_cart');

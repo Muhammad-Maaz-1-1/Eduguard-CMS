@@ -23,20 +23,21 @@
              <div class="row">
                  <div class="col-lg-9 mx-auto">
                      <div class="event-search-bar">
-                         <form action="#">
-                             <div class="form-input-group">
-                                 <input type="text" class="form-control" placeholder="Search Course..." />
-                                 <button class="button button-lg button--primary" type="submit" id="button-addon2">
-                                     Search
-                                 </button>
-                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-search">
-                                     <circle cx="11" cy="11" r="8"></circle>
-                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                 </svg>
-                             </div>
-                         </form>
+                        <form action="#">
+                            <div class="form-input-group">
+                                <input type="text" name="search" id="search" class="form-control" placeholder="Search Course..." />
+                                <button class="button button-lg button--primary" type="submit" id="button-addon2">
+                                    Search
+                                </button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-search">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </div>
+                        </form>
+
                      </div>
                  </div>
              </div>
@@ -800,90 +801,98 @@
          </button>
      </div>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-     <script>
-         $(document).ready(function() {
-             function filterCourses() {
-                 var selectedCategories = [];
-                 $('.category-checkbox:checked').each(function() {
-                     selectedCategories.push($(this).val());
-                 });
+<script>
+    $(document).ready(function() {
+        function filterCourses() {
+            var selectedCategories = [];
+            $('.category-checkbox:checked').each(function() {
+                selectedCategories.push($(this).val());
+            });
 
-                 var minPrice = $('#min_price').val();
-                 var maxPrice = $('#max_price').val();
+            var minPrice = $('#min_price').val();
+            var maxPrice = $('#max_price').val();
+            var search = $('#search').val();
 
-                 console.log('Selected categories:', selectedCategories);
-                 console.log('Price range:', minPrice, maxPrice);
+            console.log('Selected categories:', selectedCategories);
+            console.log('Price range:', minPrice, maxPrice);
+            console.log('search:', search);
 
-                 $.ajax({
-                     url: '{{ route('filterCourses') }}',
-                     type: 'GET',
-                     data: {
-                         categories: selectedCategories,
-                         min_price: minPrice,
-                         max_price: maxPrice
-                     },
-                     success: function(data) {
-                         console.log('Filtered courses:', data);
+            $.ajax({
+                url: '{{ route('filterCourses') }}',
+                type: 'GET',
+                data: {
+                    categories: selectedCategories,
+                    min_price: minPrice,
+                    max_price: maxPrice,
+                    search: search
+                },
+                success: function(data) {
+                    console.log('Filtered courses:', data);
 
-                         var courseListHtml = '';
-                         data.forEach(function(course) {
-                             courseListHtml += `
-                                 <div class="col-md-6 mb-4">
-                                     <div class="contentCard contentCard--course">
-                                         <div class="contentCard-top">
-                                             <a href="{{ route('course_detail', ['id' => '']) }}/${course.id}"><img src="{{ asset('uploads/') }}/${course.image}" alt="images" class="img-fluid" /></a>
-                                         </div>
-                                         <div class="contentCard-bottom">
-                                             <h5>
-                                                 <a href="{{ route('course_detail', ['id' => '']) }}/${course.id}" class="font-title--card">${course.title}</a>
-                                             </h5>
-                                             <div class="contentCard-info d-flex align-items-center justify-content-between">
-                                                 <a href="instructor-profile.html" class="contentCard-user d-flex align-items-center">
-                                                     <img width="50px" height="50px" style="object-fit: contain" src="{{ asset('uploads/') }}/${course.user.profile.image}" alt="client-image" class="rounded-circle" />
-                                                     <p class="font-para--md">${course.user.name}</p>
-                                                 </a>
-                                                 <div class="price">
-                                                     <span>${course.discount_price}</span>
-                                                     <del>${course.final_price}</del>
-                                                 </div>
-                                             </div>
-                                             <div class="contentCard-more justify-content-between">
-                                                 <div class="book d-flex align-items-center">
-                                                     <div class="icon">
-                                                         <img src="{{ asset('assets') }}/dist/images/icon/book.png" alt="location" />
-                                                     </div>
-                                                     <span>${course.total_lesson} Lesson</span>
-                                                 </div>
-                                                 <div class="clock d-flex align-items-center">
-                                                     <div class="icon">
-                                                         <img src="{{ asset('assets') }}/dist/images/icon/Clock.png" alt="clock" />
-                                                     </div>
-                                                     <span>${course.total_hours} Hours</span>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
-                             `;
-                         });
+                    var courseListHtml = '';
+                    data.forEach(function(course) {
+                        courseListHtml += `
+                            <div class="col-md-6 mb-4">
+                                <div class="contentCard contentCard--course">
+                                    <div class="contentCard-top">
+                                        <a href="{{ route('course_detail', ['id' => '']) }}/${course.id}"><img src="{{ asset('uploads/') }}/${course.image}" alt="images" class="img-fluid" /></a>
+                                    </div>
+                                    <div class="contentCard-bottom">
+                                        <h5>
+                                            <a href="{{ route('course_detail', ['id' => '']) }}/${course.id}" class="font-title--card">${course.title}</a>
+                                        </h5>
+                                        <div class="contentCard-info d-flex align-items-center justify-content-between">
+                                            <a href="instructor-profile.html" class="contentCard-user d-flex align-items-center">
+                                                <img width="50px" height="50px" style="object-fit: contain" src="{{ asset('uploads/') }}/${course.user.profile.image}" alt="client-image" class="rounded-circle" />
+                                                <p class="font-para--md">${course.user.name}</p>
+                                            </a>
+                                            <div class="price">
+                                                <span>${course.discount_price}</span>
+                                                <del>${course.final_price}</del>
+                                            </div>
+                                        </div>
+                                        <div class="contentCard-more justify-content-between">
+                                            <div class="book d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="{{ asset('assets') }}/dist/images/icon/book.png" alt="location" />
+                                                </div>
+                                                <span>${course.total_lesson} Lesson</span>
+                                            </div>
+                                            <div class="clock d-flex align-items-center">
+                                                <div class="icon">
+                                                    <img src="{{ asset('assets') }}/dist/images/icon/Clock.png" alt="clock" />
+                                                </div>
+                                                <span>${course.total_hours} Hours</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
 
-                         $('#course-list').html(courseListHtml);
-                     },
-                     error: function(xhr, status, error) {
-                         console.error('AJAX Error: ' + status + ' ' + error);
-                     }
-                 });
-             }
+                    $('#course-list').html(courseListHtml);
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + status + ' ' + error);
+                }
+            });
+        }
 
-             $('.category-checkbox').change(function() {
-                 filterCourses();
-             });
+        $('.category-checkbox').change(function() {
+            filterCourses();
+        });
 
-             $('.angle-btn').click(function(e) {
-                 e.preventDefault();
-                 filterCourses();
-             });
-         });
-     </script>
+        $('#search').on('input', function() {
+            filterCourses();
+        });
+
+        $('#button-addon2').click(function(e) {
+            e.preventDefault();
+            filterCourses();
+        });
+    });
+</script>
+
 
  @endsection

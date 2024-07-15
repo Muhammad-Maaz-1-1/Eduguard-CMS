@@ -10,7 +10,6 @@
     <link rel="icon" type="image/png" href="{{ asset('assets') }}/dist/images/favicon/favicon.png" />
     <link rel="stylesheet" href="{{ asset('assets') }}/src/scss/vendors/plugin/css/star-rating-svg.css" />
     <script src="{{ asset('assets') }}/src/script.js"></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
 

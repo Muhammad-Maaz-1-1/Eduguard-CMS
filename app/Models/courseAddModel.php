@@ -17,4 +17,8 @@ class courseAddModel extends Model
     {
         return $this->belongsTo(categoryModel::class, 'categoryId'); // Adjust foreign key if needed
     }
+    public function enrollments()
+    {
+        return $this->hasMany(EnrollmentModel::class, 'course_id'); // Added 'course_id' as the foreign key
+    }
 }

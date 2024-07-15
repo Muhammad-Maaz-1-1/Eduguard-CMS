@@ -54,159 +54,178 @@
                               <div class="tab-content" id="pills-tabContent">
                                   <div class="tab-pane fade show active" id="pills-checkout" role="tabpanel"
                                       aria-labelledby="pills-checkout-tab">
-                                      <form action="#">
-                                          <div class="mb-3">
-                                              <label for="card-name-one">cccName on Card</label>
-                                              <input type="text" class="form-control" placeholder="Type here"
-                                                  id="card-name-one" />
-                                          </div>
-                                          <div class="mb-3">
-                                              <label for="card-number-one">Card Number</label>
-                                              <input type="text" class="form-control" placeholder="Type here"
-                                                  id="card-number-one" />
-                                          </div>
-                                          <div class="mb-3">
-                                              <div class="row">
-                                                  <div class="col-md-6 mb-3 mb-lg-0">
-                                                      <label for="expiration-date-one">Expiration Date (MM/YY)</label>
-                                                      <input type="text" class="form-control" placeholder="Type here"
-                                                          id="expiration-date-one" />
-                                                  </div>
-                                                  <div class="col-md-6">
-                                                      <label for="cvc-one">CVC</label>
-                                                      <input type="text" class="form-control" id="cvc-one"
-                                                          placeholder="Type here" />
-                                                  </div>
+
+                                      <form role="form" action="{{ route('stripe.post') }}" method="post"
+                                          class="require-validation" data-cc-on-file="false"
+                                          data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="payment-form">
+                                          @csrf
+
+                                          <div class='form-row row'>
+                                              <div class='col-xs-12 form-group required'>
+                                                  <label class='control-label'>Name on Card</label> <input
+                                                      class='form-control' size='4' type='text' value="Test">
                                               </div>
                                           </div>
-                                          <div class="mb-4">
-                                              <div class="form-check d-flex align-items-center ps-0">
-                                                  <input type="checkbox" id="flexCheckIndeterminate-one" />
-                                                  <label class="form-check-label ms-2 mb-0"
-                                                      for="flexCheckIndeterminate-one">
-                                                      Save my information for a faster checkout
-                                                  </label>
+
+                                          <div class='form-row row'>
+                                              <div class='col-xs-12 form-group card required border-0 my-4'>
+                                                  <label class='control-label'>Card Number</label> <input
+                                                      autocomplete='off' class='form-control card-number' size='20'
+                                                      type='text' value="4242 4242 4242 4242
+
+">
                                               </div>
                                           </div>
-                                          <button type="submit" class="button button-lg button--primary w-100">Confirm
-                                              Payment</button>
+
+                                          <div class='form-row row'>
+                                              <div class='col-xs-12 col-md-4 form-group cvc required'>
+                                                  <label class='control-label'>CVC</label> <input autocomplete='off'
+                                                      class='form-control card-cvc' placeholder='ex. 311' size='4'
+                                                      type='text' value="123">
+                                              </div>
+                                              <div class='col-xs-12 col-md-4 form-group expiration required'>
+                                                  <label class='control-label'>Expiration Month</label> <input
+                                                      class='form-control card-expiry-month' value="12"
+                                                      placeholder='MM' size='2' type='text'>
+                                              </div>
+                                              <div class='col-xs-12 col-md-4 form-group expiration required'>
+                                                  <label class='control-label'>Expiration Year</label> <input
+                                                      class='form-control card-expiry-year' placeholder='YYYY'
+                                                      size='4' type='text' value="2028">
+                                              </div>
+                                          </div>
+
+
+                                          <div class="row">
+                                              <div class="col-xs-12">
+                                                  <button class="btn btn-primary btn-lg btn-block mt-4 text-white" type="submit">Pay Now
+                                                      </button>
+                                              </div>
+                                          </div>
+
                                       </form>
                                   </div>
                                   <div class="tab-pane fade " id="pills-paypal" role="tabpanel"
                                       aria-labelledby="pills-paypal-tab">
-                                      @if (Session::has('success'))
-                                      <div class="alert alert-success text-center">
-                                          <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                                          <p>{{ Session::get('success') }}</p>
-                                      </div>
-                                  @endif
 
-                                  @if (Session::has('error'))
-                                      <div class="alert alert-danger text-center">
-                                          <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                                          <p>{{ Session::get('error') }}</p>
-                                      </div>
-                                  @endif
+                                      <form role="form" action="{{ route('stripe.post') }}" method="post"
+                                          class="require-validation" data-cc-on-file="false"
+                                          data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="payment-form">
+                                          @csrf
 
-                                  <form role="form" method="post" action="{{ route('stripe.post') }}" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="payment-form">
-                                      @csrf
-                                      <input type="hidden" name="course_id" value="{{ $course->id ?? '' }}">
-                                      <input type="hidden" name="user_id" value="{{ auth()->user()->id ?? '' }}">
-
-                                      <div class='form-row row'>
-                                          <div class='col-xs-12 form-group required'>
-                                              <label class='control-label'>Name on Card</label>
-                                              <input class='form-control' size='4' type='text' name="card_name" required>
+                                          <div class='form-row row'>
+                                              <div class='col-xs-12 form-group required'>
+                                                  <label class='control-label'>Name on Card</label> <input
+                                                      class='form-control' size='4' type='text' value="Test">
+                                              </div>
                                           </div>
-                                      </div>
 
-                                      <div class='form-row row'>
-                                          <div class='col-xs-12 form-group card required'>
-                                              <label class='control-label'>Card Number</label>
-                                              <input class='form-control card-number' size='20' type='text' name="card_number" required>
+                                          <div class='form-row row'>
+                                              <div class='col-xs-12 form-group card required border-0 my-4'>
+                                                  <label class='control-label'>Card Number</label> <input
+                                                      autocomplete='off' class='form-control card-number' size='20'
+                                                      type='text' value="4242 4242 4242 4242
+
+">
+                                              </div>
                                           </div>
-                                      </div>
 
-                                      <div class='form-row row'>
-                                          <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                              <label class='control-label'>CVC</label>
-                                              <input class='form-control card-cvc' placeholder='ex. 311' size='4' type='text' name="card_cvc" required>
+                                          <div class='form-row row'>
+                                              <div class='col-xs-12 col-md-4 form-group cvc required'>
+                                                  <label class='control-label'>CVC</label> <input autocomplete='off'
+                                                      class='form-control card-cvc' placeholder='ex. 311' size='4'
+                                                      type='text' value="123">
+                                              </div>
+                                              <div class='col-xs-12 col-md-4 form-group expiration required'>
+                                                  <label class='control-label'>Expiration Month</label> <input
+                                                      class='form-control card-expiry-month' value="12"
+                                                      placeholder='MM' size='2' type='text'>
+                                              </div>
+                                              <div class='col-xs-12 col-md-4 form-group expiration required'>
+                                                  <label class='control-label'>Expiration Year</label> <input
+                                                      class='form-control card-expiry-year' placeholder='YYYY'
+                                                      size='4' type='text' value="2028">
+                                              </div>
                                           </div>
-                                          <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                              <label class='control-label'>Expiration Month</label>
-                                              <input class='form-control card-expiry-month' placeholder='MM' size='2' type='text' name="card_expiry_month" required>
+
+
+                                          <div class="row">
+                                              <div class="col-xs-12">
+                                                  <button class="btn btn-primary btn-lg btn-block mt-4 text-white" type="submit">Pay Now
+                                                      </button>
+                                              </div>
                                           </div>
-                                          <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                              <label class='control-label'>Expiration Year</label>
-                                              <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text' name="card_expiry_year" required>
-                                          </div>
-                                      </div>
 
-                                      <div class='form-row row'>
-                                          <div class='col-md-12 error form-group hide'>
-                                              <div class='alert-danger alert'>Please correct the errors and try again.</div>
-                                          </div>
-                                      </div>
+                                      </form>
 
-                                      <div class="row">
-                                          <div class="col-xs-12">
-                                              <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now</button>
-                                          </div>
-                                      </div>
-                                  </form>
 
-                                  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+                                      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-                                  <script type="text/javascript">
-                                      $(function() {
-                                          var $form = $(".require-validation");
+                                      <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
-                                          $('form.require-validation').bind('submit', function(e) {
-                                              var $form = $(".require-validation"),
-                                                  inputSelector = ['input[type=email]', 'input[type=password]', 'input[type=text]', 'input[type=file]', 'textarea'].join(', '),
-                                                  $inputs = $form.find('.required').find(inputSelector),
-                                                  $errorMessage = $form.find('div.error'),
-                                                  valid = true;
-                                              $errorMessage.addClass('hide');
+                                      <script type="text/javascript">
+                                          $(function() {
 
-                                              $('.has-error').removeClass('has-error');
-                                              $inputs.each(function(i, el) {
-                                                  var $input = $(el);
-                                                  if ($input.val() === '') {
-                                                      $input.parent().addClass('has-error');
-                                                      $errorMessage.removeClass('hide');
+
+                                              var $form = $(".require-validation");
+
+                                              $('form.require-validation').bind('submit', function(e) {
+                                                  var $form = $(".require-validation"),
+                                                      inputSelector = ['input[type=email]', 'input[type=password]',
+                                                          'input[type=text]', 'input[type=file]',
+                                                          'textarea'
+                                                      ].join(', '),
+                                                      $inputs = $form.find('.required').find(inputSelector),
+                                                      $errorMessage = $form.find('div.error'),
+                                                      valid = true;
+                                                  $errorMessage.addClass('hide');
+
+                                                  $('.has-error').removeClass('has-error');
+                                                  $inputs.each(function(i, el) {
+                                                      var $input = $(el);
+                                                      if ($input.val() === '') {
+                                                          $input.parent().addClass('has-error');
+                                                          $errorMessage.removeClass('hide');
+                                                          e.preventDefault();
+                                                      }
+                                                  });
+
+                                                  if (!$form.data('cc-on-file')) {
                                                       e.preventDefault();
+                                                      Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+                                                      Stripe.createToken({
+                                                          number: $('.card-number').val(),
+                                                          cvc: $('.card-cvc').val(),
+                                                          exp_month: $('.card-expiry-month').val(),
+                                                          exp_year: $('.card-expiry-year').val()
+                                                      }, stripeResponseHandler);
                                                   }
+
                                               });
 
-                                              if (!$form.data('cc-on-file')) {
-                                                  e.preventDefault();
-                                                  Stripe.setPublishableKey($form.data('stripe-publishable-key'));
-                                                  Stripe.createToken({
-                                                      number: $('.card-number').val(),
-                                                      cvc: $('.card-cvc').val(),
-                                                      exp_month: $('.card-expiry-month').val(),
-                                                      exp_year: $('.card-expiry-year').val()
-                                                  }, stripeResponseHandler);
+                                              /*------------------------------------------
+                                              --------------------------------------------
+                                              Stripe Response Handler
+                                              --------------------------------------------
+                                              --------------------------------------------*/
+                                              function stripeResponseHandler(status, response) {
+                                                  if (response.error) {
+                                                      $('.error')
+                                                          .removeClass('hide')
+                                                          .find('.alert')
+                                                          .text(response.error.message);
+                                                  } else {
+                                                      /* token contains id, last4, and card type */
+                                                      var token = response['id'];
+
+                                                      $form.find('input[type=text]').empty();
+                                                      $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+                                                      $form.get(0).submit();
+                                                  }
                                               }
+
                                           });
-
-                                          function stripeResponseHandler(status, response) {
-                                              if (response.error) {
-                                                  $('.error').removeClass('hide').find('.alert').text(response.error.message);
-                                              } else {
-                                                  var token = response['id'];
-                                                  $form.find('input[type=text]').val('');
-                                                  $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
-                                                  $form.get(0).submit();
-                                              }
-                                          }
-                                      });
-                                  </script>
-
-
-
-
+                                      </script>
                                   </div>
                               </div>
                           </div>
@@ -263,7 +282,4 @@
               </div>
           </section>
           <!-- Checkout Area Ends Here -->
-
-
-
       @endsection

@@ -21,17 +21,16 @@
                           <div>
                               <div class="students-info-intro-start">
                                   <div class="image">
-                                     @if($profile && $profile->user_id === Auth::user()->id)
+                                      @if ($profile && $profile->user_id === Auth::user()->id)
                                           <img src="{{ asset('uploads/' . $profile->image) }}" />
                                       @else
-                                          <img src="{{ asset('assets') }}/assets/src/images/man.png"
-                                              alt="Student" />
+                                          <img src="{{ asset('assets') }}/assets/src/images/man.png" alt="Student" />
                                       @endif
                                   </div>
                                   <div class="text">
                                       <h5>{{ Auth()->user()->name }}</h5>
                                       <p>
-                                         @if($profile && $profile->user_id === Auth::user()->id)
+                                          @if ($profile && $profile->user_id === Auth::user()->id)
                                               {{ $profile->skill }}
                                           @else
                                               <a href="{{ route('edit_student_profile') }}">Add Skill</a>
@@ -57,7 +56,7 @@
                                           </svg>
                                       </div>
                                       <div class="enrolled-courses-text">
-                                          <h6 class="font-title--xs">24</h6>
+                                          <h6 class="font-title--xs">{{ $enrollmentCourse ?? '0' }}</h6>
                                           <p class="fs-6 mt-1">Enrolled Courses</p>
                                       </div>
                                   </div>
@@ -112,13 +111,13 @@
                                   data-bs-target="#nav-setting" type="button" role="tab"
                                   aria-controls="nav-setting" aria-selected="false">Setting</button>
 
-                             <a href="{{route('logout')}}"style="
-                             color: #666575;
-                         ">
-                                Logout
-                                </a>
+                              <a href="{{ route('logout') }}"style="
+                                     color: #666575;
+                                 ">
+                                  Logout
+                              </a>
 
-                                </div>
+                          </div>
                       </nav>
                   </div>
 
@@ -221,7 +220,7 @@
                                       <div class="about-student">
                                           <h6 class="font-title--card">About Me</h6>
                                           <p class="font-para--md">
-                                             @if($profile && $profile->user_id === Auth::user()->id)
+                                              @if ($profile && $profile->user_id === Auth::user()->id)
                                                   {{ $profile->about }}
                                               @else
                                                   <a href="{{ route('edit_student_profile') }}">tell me About your self</a>
@@ -254,7 +253,7 @@
                                               </dt>
                                               <dd class="col-sm-8">
                                                   <p>
-                                                     @if($profile && $profile->user_id === Auth::user()->id)
+                                                      @if ($profile && $profile->user_id === Auth::user()->id)
                                                           {{ $profile->skill }}
                                                       @else
                                                           <a href="{{ route('edit_student_profile') }}">
@@ -269,7 +268,7 @@
                                               </dt>
                                               <dd class="col-sm-8">
                                                   <p>
-                                                     @if($profile && $profile->user_id === Auth::user()->id)
+                                                      @if ($profile && $profile->user_id === Auth::user()->id)
                                                           {{ $profile->phone_number }}
                                                       @else
                                                           <a href="{{ route('edit_student_profile') }}">
@@ -284,7 +283,7 @@
                                               </dt>
                                               <dd class="col-sm-8">
                                                   <p>
-                                                     @if($profile && $profile->user_id === Auth::user()->id)
+                                                      @if ($profile && $profile->user_id === Auth::user()->id)
                                                           {{ $profile->nationality }}
                                                       @else
                                                           <a href="{{ route('edit_student_profile') }}">
@@ -301,303 +300,58 @@
                           <div class="tab-pane fade" id="nav-coursesall" role="tabpanel"
                               aria-labelledby="nav-coursesall-tab">
                               <div class="row">
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-01.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
+                                  @foreach ($courseAddModel as $item)
+                                      <div class="col-lg-4 col-md-6 col-md-6 mb-4">
+                                          <div class="contentCard contentCard--watch-course">
+                                              <div class="contentCard-top">
+                                                  <a href="course-details.html">
+                                                          <img
+                                                              src="{{ asset('uploads/' . $item->courses->image) }}"
+                                                              alt="images" class="img-fluid" />
+
+
                                                   </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
                                               </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
+                                              <div class="contentCard-bottom">
+                                                  <h5>
+                                                      <a href="course-details.html"
+                                                          class="font-title--card">{{ $item->courses->title }}</a>
+                                                  </h5>
+                                                  <div
+                                                      class="contentCard-info d-flex align-items-center justify-content-between">
+                                                      <a href="instructor-profile.html"
+                                                          class="contentCard-user d-flex align-items-center">
+                                                          @if ($item->course && $item->course->profile && $item->course->profile->image !== null)
+                                                          <img style="width: 70px; height: 70px; border-radius: 200px;"
+                                                              src="{{ asset('uploads/' . $item->course->profile->image) }}"
+                                                              alt="images" class="img-fluid" />
+                                                      @else
+                                                          <img style="width: 70px; height: 70px; border-radius: 200px;"
+                                                              src="{{ asset('assets/src/images/teacher.png') }}"
+                                                              alt="Instructor" />
+                                                      @endif
+                                                          <p class="font-para--md">
+                                                            @if ($item->courses && $item->courses->user)
+                                                            {{ $item->courses->user->name }}
+                                                        @endif
+                                                          </p>
+                                                      </a>
+                                                      <div class="contentCard-course--status d-flex align-items-center">
+                                                          <span class="percentage">43%</span>
+                                                          <p>Finish</p>
+                                                      </div>
+                                                  </div>
+                                                  <a class="button button-md button--primary-outline w-100 my-3"
+                                                      href="{{ route('watch') }}">Watch Course</a>
+                                                  <div class="contentCard-watch--progress">
+                                                      <span class="percentage" style="width: 43%;"></span>
+                                                  </div>
                                               </div>
                                           </div>
                                       </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-02.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-03.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-04.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-05.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-01.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-02.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-03.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-04.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
+                                  @endforeach
+
+
                                   <div class="col-lg-12 mt-lg-5">
                                       <div class="pagination justify-content-center pb-0">
                                           <div class="pagination-group">
@@ -629,303 +383,56 @@
                           <div class="tab-pane fade" id="nav-activecourses" role="tabpanel"
                               aria-labelledby="nav-activecourses-tab">
                               <div class="row">
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-01.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-02.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-03.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-04.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-05.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-01.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-02.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-03.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-4 col-md-6 col-md-6 mb-4">
-                                      <div class="contentCard contentCard--watch-course">
-                                          <div class="contentCard-top">
-                                              <a href="course-details.html"><img
-                                                      src="{{ asset('assets') }}/dist/images/courses/demo-img-04.png"
-                                                      alt="images" class="img-fluid" /></a>
-                                          </div>
-                                          <div class="contentCard-bottom">
-                                              <h5>
-                                                  <a href="course-details.html" class="font-title--card">Chicago
-                                                      International Conference on Education</a>
-                                              </h5>
-                                              <div
-                                                  class="contentCard-info d-flex align-items-center justify-content-between">
-                                                  <a href="instructor-profile.html"
-                                                      class="contentCard-user d-flex align-items-center">
-                                                      <img src="{{ asset('assets') }}/dist/images/courses/7.png"
-                                                          alt="client-image" class="rounded-circle" />
-                                                      <p class="font-para--md">Brandon Dias</p>
-                                                  </a>
-                                                  <div class="contentCard-course--status d-flex align-items-center">
-                                                      <span class="percentage">43%</span>
-                                                      <p>Finish</p>
-                                                  </div>
-                                              </div>
-                                              <a class="button button-md button--primary-outline w-100 my-3"
-                                                  href="{{ route('watch') }}">Watch Course</a>
-                                              <div class="contentCard-watch--progress">
-                                                  <span class="percentage" style="width: 43%;"></span>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
+                                @foreach ($courseAddModel as $item)
+                                <div class="col-lg-4 col-md-6 col-md-6 mb-4">
+                                    <div class="contentCard contentCard--watch-course">
+                                        <div class="contentCard-top">
+                                            <a href="course-details.html">
+                                                    <img
+                                                        src="{{ asset('uploads/' . $item->courses->image) }}"
+                                                        alt="images" class="img-fluid" />
+
+
+                                            </a>
+                                        </div>
+                                        <div class="contentCard-bottom">
+                                            <h5>
+                                                <a href="course-details.html"
+                                                    class="font-title--card">{{ $item->courses->title }}</a>
+                                            </h5>
+                                            <div
+                                                class="contentCard-info d-flex align-items-center justify-content-between">
+                                                <a href="instructor-profile.html"
+                                                    class="contentCard-user d-flex align-items-center">
+                                                    @if ($item->course && $item->course->profile && $item->course->profile->image !== null)
+                                                    <img style="width: 70px; height: 70px; border-radius: 200px;"
+                                                        src="{{ asset('uploads/' . $item->course->profile->image) }}"
+                                                        alt="images" class="img-fluid" />
+                                                @else
+                                                    <img style="width: 70px; height: 70px; border-radius: 200px;"
+                                                        src="{{ asset('assets/src/images/teacher.png') }}"
+                                                        alt="Instructor" />
+                                                @endif
+                                                    <p class="font-para--md">
+                                                      @if ($item->courses && $item->courses->user)
+                                                      {{ $item->courses->user->name }}
+                                                  @endif
+                                                    </p>
+                                                </a>
+                                                <div class="contentCard-course--status d-flex align-items-center">
+                                                    <span class="percentage">43%</span>
+                                                    <p>Finish</p>
+                                                </div>
+                                            </div>
+                                            <a class="button button-md button--primary-outline w-100 my-3"
+                                                href="{{ route('watch') }}">Watch Course</a>
+                                            <div class="contentCard-watch--progress">
+                                                <span class="percentage" style="width: 43%;"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                                   <div class="col-lg-12 mt-lg-5">
                                       <div class="pagination justify-content-center pb-0">
                                           <div class="pagination-group">
@@ -1262,16 +769,16 @@
                                                       viewBox="0 0 9.414 16.828">
                                                       <path data-name="Icon feather-chevron-left" d="M20.5,23l-7-7,7-7"
                                                           transform="translate(-12.5 -7.586)" fill="none"
-                                                          stroke="#1a2224" stroke-linecap="round"
-                                                          stroke-linejoin="round" stroke-width="2"></path>
+                                                          stroke="#1a2224" stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2"></path>
                                                   </svg>
                                               </a>
                                               <a href="#!1" class="cdp_i active">01</a>
                                               <a href="#!2" class="cdp_i">02</a>
                                               <a href="#!3" class="cdp_i">03</a>
                                               <a href="#!+1" class="p_next">
-                                                  <svg width="10" height="16" viewBox="0 0 10 16"
-                                                      fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                  <svg width="10" height="16" viewBox="0 0 10 16" fill="none"
+                                                      xmlns="http://www.w3.org/2000/svg">
                                                       <path d="M1.5 1L8.5 8L1.5 15" stroke="#35343E" stroke-width="2"
                                                           stroke-linecap="round" stroke-linejoin="round"></path>
                                                   </svg>
@@ -1289,8 +796,8 @@
                                       <div class="purchase-area">
                                           <div class="purchase-area-close">
                                               <a href="#">
-                                                  <svg width="12" height="12" viewBox="0 0 12 12"
-                                                      fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+                                                      xmlns="http://www.w3.org/2000/svg">
                                                       <path d="M11 1L1 11" stroke="#F15C4C" stroke-width="1.5"
                                                           stroke-linecap="round" stroke-linejoin="round" />
                                                       <path d="M1 1L11 11" stroke="#F15C4C" stroke-width="1.5"
@@ -1385,8 +892,8 @@
                                       <div class="purchase-area">
                                           <div class="purchase-area-close">
                                               <a href="#">
-                                                  <svg width="12" height="12" viewBox="0 0 12 12"
-                                                      fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+                                                      xmlns="http://www.w3.org/2000/svg">
                                                       <path d="M11 1L1 11" stroke="#F15C4C" stroke-width="1.5"
                                                           stroke-linecap="round" stroke-linejoin="round" />
                                                       <path d="M1 1L11 11" stroke="#F15C4C" stroke-width="1.5"
@@ -1482,8 +989,8 @@
                                                           values="0 0 0 0 0.9 0 0 0 0 0.6165 0 0 0 0 0.19125 0 0 0 0.33 0" />
                                                       <feBlend mode="normal" in2="BackgroundImageFix"
                                                           result="effect1_dropShadow" />
-                                                      <feBlend mode="normal" in="SourceGraphic"
-                                                          in2="effect1_dropShadow" result="shape" />
+                                                      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow"
+                                                          result="shape" />
                                                   </filter>
                                                   <filter id="filter1_di" x="16.2636" y="16.5625" width="7.41119"
                                                       height="4.51454" filterUnits="userSpaceOnUse"
@@ -1497,15 +1004,15 @@
                                                           values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.35 0" />
                                                       <feBlend mode="normal" in2="BackgroundImageFix"
                                                           result="effect1_dropShadow" />
-                                                      <feBlend mode="normal" in="SourceGraphic"
-                                                          in2="effect1_dropShadow" result="shape" />
+                                                      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow"
+                                                          result="shape" />
                                                       <feColorMatrix in="SourceAlpha" type="matrix"
                                                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
                                                           result="hardAlpha" />
                                                       <feOffset dy="0.426295" />
                                                       <feGaussianBlur stdDeviation="0.426295" />
-                                                      <feComposite in2="hardAlpha" operator="arithmetic"
-                                                          k2="-1" k3="1" />
+                                                      <feComposite in2="hardAlpha" operator="arithmetic" k2="-1"
+                                                          k3="1" />
                                                       <feColorMatrix type="matrix"
                                                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
                                                       <feBlend mode="normal" in2="shape"

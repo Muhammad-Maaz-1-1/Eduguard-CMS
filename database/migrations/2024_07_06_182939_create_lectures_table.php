@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('lectures', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('chapter_id');
-            $table->string('lecture_title');
-            $table->string('lecture_video');
-            $table->string('lecture_resources');
+            $table->unsignedBigInteger('chapter_id')->nullable();
+            $table->string('lecture_title')->nullable();
+            $table->string('lecture_video')->nullable();
+            $table->string('lecture_resources')->nullable();
             $table->timestamps();
 
             // Foreign key constraint

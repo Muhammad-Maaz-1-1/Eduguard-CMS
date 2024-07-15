@@ -1,7 +1,7 @@
   @extends('visitors.layouts.main')
         @section('main-container')
         <!-- Banner Starts Here -->
-        <section class="main-banner" style="background-image: url({{ asset('assets') }}/dist/images/banner/banner.jpg);">
+        <section class="main-banner pt-0" style="background-image: url({{ asset('assets') }}/dist/images/banner/banner.jpg);">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-7 mb-lg-0 order-2 order-lg-0 d-flex align-items-center">

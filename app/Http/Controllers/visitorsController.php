@@ -7,6 +7,7 @@ use App\Models\categoryModel;
 use App\Models\Chapter;
 use App\Models\chapterModel;
 use App\Models\courseAddModel;
+use App\Models\EnrollmentModel;
 use App\Models\Lecture;
 use App\Models\user;
 use App\Models\profileModel;
@@ -15,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Stmt\Foreach_;
 
 class visitorsController extends Controller
 {
@@ -27,7 +29,7 @@ class visitorsController extends Controller
         $development = courseAddModel::where('categoryId', 3)->get();
         $marketing = courseAddModel::where('categoryId', 4)->get();
         $instructors = user::where('role', 'Instructor')->get();
-        return view('visitors.index', compact('categoryModel','instructors', 'courseAddModel', 'design', 'development', 'marketing'));
+        return view('visitors.index', compact('categoryModel', 'instructors', 'courseAddModel', 'design', 'development', 'marketing'));
     }
     public function courseDetail($id)
     {
@@ -40,7 +42,9 @@ class visitorsController extends Controller
         // Convert final_price and discount_price to numeric values
         $finalPrice = (float) str_replace('$', '', $courseAddModel->final_price);
         $discountPrice = (float) str_replace('$', '', $courseAddModel->discount_price);
-
+        $totalCourse = user::where('id', $courseAddModel->teacher_id)->withCount('courses')->get();
+        $user = User::where('id', $courseAddModel->teacher_id)->withCount('courses')->first();
+        $totalCourses = $user->courses_count;
         // Calculate discount percentage
         if ($finalPrice > 0) {
             $discountPercentage = ((1 - ($discountPrice / $finalPrice)) * 100);
@@ -50,7 +54,7 @@ class visitorsController extends Controller
         }
 
         // Return view with course and profile data
-        return view('visitors.course-details', compact('chapterModel', 'courseAddModel', 'profile', 'discountPercentageFormatted', 'userName'));
+        return view('visitors.course-details', compact('chapterModel', 'totalCourses', 'courseAddModel', 'profile', 'discountPercentageFormatted', 'userName'));
     }
     public function searchSubmit(Request $request)
     {
@@ -81,20 +85,27 @@ class visitorsController extends Controller
         $categories = $request->input('categories');
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
+        $search = $request->input('search');
 
-        $query = CourseAddModel::where('status', true); // Include the status condition here
+        $query = CourseAddModel::where('status', true);
 
         if ($categories) {
-            $query->whereIn('categoryId', $categories); // Adjust the column name based on your database
+            $query->whereIn('categoryId', $categories);
         }
-
+        if ($search !== null) {
+            $query->where(function ($query) use ($search) {
+                $query->where('title', 'LIKE', "%$search%")
+                    ->orWhere('description', 'LIKE', "%$search%")
+                    ->orWhere('category', 'LIKE', "%$search%");
+            });
+        }
         if ($minPrice !== null && $maxPrice !== null) {
-            $query->whereBetween('final_price', [$minPrice, $maxPrice]);
+            $query->whereBetween('discount_price', [$minPrice, $maxPrice]);
         }
 
-        $courses = $query->with('user.profile')->get(); // Eager load 'user' and 'profile' relationships
+        $courses = $query->with('user.profile')->get();
 
-        return response()->json($courses); // Return JSON response with courses and associated user profile details
+        return response()->json($courses);
     }
 
 
@@ -215,8 +226,16 @@ class visitorsController extends Controller
     public function studentsProfile()
     {
         $profile = profileModel::first();
+        $enrollmentCourse = EnrollmentModel::withCount('courses')->count();
+        // $courseAddModel = EnrollmentModel::where('user_id', Auth::user()->id)->get();
+        $courseAddModel = EnrollmentModel::where('user_id', Auth::id())
+            ->with('courses.user', 'courses.user.profile')
+            ->get();
+        // foreach( $courseAddModel as $item){
+        //     dd($item->courses);
+        // }
 
-        return view('visitors.students-profile', compact('profile'));
+        return view('visitors.students-profile', compact('profile', 'enrollmentCourse', 'courseAddModel'));
     }
     public function editStudentsProfile()
     {
@@ -361,7 +380,39 @@ class visitorsController extends Controller
     }
     public function chaptersSubmit(Request $request)
     {
+        $course_id = $request->course_id[0]; // Assuming course_id is an array with a single value
+        foreach ($request->chapter_heading as $chapterIndex => $chapterHeading) {
+            // Create a new Chapter instance
+            $chapter = new Chapter();
+            $chapter->chapter_heading = $chapterHeading;
+            $chapter->course_id = $course_id;
+            $chapter->save();
+
+            // Check if there are lectures corresponding to the current chapter
+            if (isset($request->lecture_title[$chapterIndex])) {
+                foreach ($request->lecture_title[$chapterIndex] as $lectureIndex => $lectureTitle) {
+                    // Create a new Lecture instance
+                    $lecture = new Lecture();
+                    $lecture->lecture_title = $lectureTitle;
+                    $lecture->chapter_id = $chapter->id; // Associate lecture with the saved chapter
+
+                    // Handle lecture video upload
+                    if (isset($request->lecture_video[$chapterIndex][$lectureIndex])) {
+                        $uploadedFile = $request->lecture_video[$chapterIndex][$lectureIndex];
+                        $videoPath = rand(0, 9999) . time() . '.' . $uploadedFile->getClientOriginalExtension();
+                        $uploadedFile->move(public_path('uploads'), $videoPath);
+                        $lecture->lecture_video = $videoPath;
+                    }
+
+                    // Save the lecture
+                    $lecture->save();
+                }
+            }
+        }
+
+        return redirect()->back()->with('success', 'Chapters and lectures have been successfully added.');
     }
+
 
 
     public function courseFormSubmit(Request $request)

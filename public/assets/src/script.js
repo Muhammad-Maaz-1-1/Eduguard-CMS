@@ -142,9 +142,9 @@ document.addEventListener('DOMContentLoaded', function() {
         var newRow = document.createElement('tr');
         newRow.id = 'row' + i;
         newRow.innerHTML =
-            '<td><input type="text" name="lecture_title[]" placeholder="Lecture Title" class="form-control lecture_title"/></td>' +
-            '<td><input type="file" name="lecture_video[]" class="form-control lecture_video"/></td>' +
-            '<td><input type="file" name="lecture_resources[]" class="form-control lecture_resources"/></td>' +
+            '<td><label>Add Lecture Title</label><input type="text" name="lecture_title[0][]" placeholder="Add Lecture Title" class="form-control lecture_title"/></td>' +
+            '<td><label>Add Lecture Video</label><input type="file" name="lecture_video[0][]" class="form-control lecture_video"/></td>' +
+            '<td><label>Add Lecture Resources</label><input type="file" name="lecture_resources[]" class="form-control lecture_resources"/></td>' +
             '<td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove">Remove</button></td>';
 
         dynamicField.appendChild(newRow);
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var newRow = document.createElement('tr');
             newRow.id = chapterId;
             newRow.innerHTML =
-                '<td><input type="text" name="chapter_heading[]" placeholder="Chapter Heading" class="form-control chapter_heading"/></td>' +
+                '<td><label>Add Your Chapters</label><input type="text" name="chapter_heading[]" placeholder="Chapter Heading" class="form-control chapter_heading"/></td>' +
                 '<td><button type="button" name="remove" data-chapter-id="' + chapterId + '" class="btn btn-danger btn_remove">Remove</button>' +
                 '<button type="button" name="newchapterslectureAdd" data-chapter-id="' + chapterId + '" class="btn btn-primary newchapterslectureAdd">Add Lecture</button></td>';
 
@@ -215,9 +215,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 newRow.id = lectureId;
                 newRow.classList.add(chapterId); // Add chapter id as class for easy removal
                 newRow.innerHTML =
-                    '<td><input type="text" name="lecture_title[]" placeholder="Lecture Title" class="form-control lecture_title"/></td>' +
-                    '<td><input type="file" name="lecture_video[]" class="form-control lecture_video"/></td>' +
-                    '<td><input type="file" name="lecture_resources[]" class="form-control lecture_resources"/></td>' +
+                    '<td> <label>Add Lecture Title</label><input type="text" name="lecture_title[0][]" placeholder="Add Lecture Title" class="form-control lecture_title"/></td>' +
+                    '<td><label>Add Lecture Video</label><input type="file" name="lecture_video[0][]" class="form-control lecture_video"/></td>' +
+                    '<td><label>Add Lecture Resources</label><input type="file" name="lecture_resources[]" class="form-control lecture_resources"/></td>' +
                     '<td><button type="button" name="remove" id="' + lectureId + '" class="btn btn-danger btn_remove">Remove</button></td>';
 
                 dynamicField.appendChild(newRow);
